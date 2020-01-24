@@ -13,7 +13,7 @@ const config = {
         rules: [
             {
                 use: 'babel-loader', //teaches babel how to work with webpack
-                test: /\.js$/,
+                test: /\.(js|jsx|ts|tsx)$/,
                 exclude: /node_modules/
             },
             {
@@ -25,6 +25,9 @@ const config = {
             }
         ]
     },
+    devServer: {
+        historyApiFallback: true, // allow reload page
+      },
     plugins : [
         new HtmlWebpackPlugin ({
             template : 'src/index.html' //add tags script to html template with src= bundle.js or vendors.js
