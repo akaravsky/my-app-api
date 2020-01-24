@@ -2,9 +2,11 @@ var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const config = {
-    entry: './src/index.js',
+    entry: {
+        bundle: './src/index.js'
+      },
     output: {
-        filename: 'bundle.js',
+        filename: '[name].[chunkhash].js', //chunkhash - for caching
         path: path.resolve(__dirname, 'build'),
     },
     module: {
@@ -17,17 +19,28 @@ const config = {
             {
                 use: [
                     'style-loader', // style-loader - takes css modules and stick them in style tag in html file 
-                    'css-loader'
-                ], // css-loader - for reading content of css files
+                    'css-loader' // css-loader - for reading content of css files
+                ],
                 test: /\.css$/
             }
         ]
     },
     plugins : [
         new HtmlWebpackPlugin ({
-            template : 'src/index.html'
+            template : 'src/index.html' //add tags script to html template with src= bundle.js or vendors.js
         })
-    ]
+    ],
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                defaultVendors: {
+                    test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all'
+                }
+            }
+        }
+    }
 
 }
 
