@@ -3,18 +3,34 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const config = {
     entry: {
-        bundle: './src/index.js'
+        bundle: './src/index.tsx'
       },
     output: {
         filename: '[name].[chunkhash].js', //chunkhash - for caching
         path: path.resolve(__dirname, 'build'),
     },
+     // Enable sourcemaps for debugging webpack's output.
+     devtool: "source-map",
+
+    resolve: {
+        // Add '.ts' and '.tsx' as resolvable extensions.
+        extensions: [".ts", ".tsx", ".js", ".jsx"]
+    },
     module: {
         rules: [
             {
                 use: 'babel-loader', //teaches babel how to work with webpack
-                test: /\.(js|jsx|ts|tsx)$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/
+            },
+            {
+                test: /\.ts(x?)$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: "ts-loader"
+                    }
+                ]
             },
             {
                 use: [

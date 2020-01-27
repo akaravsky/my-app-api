@@ -7,11 +7,11 @@ import {
     Link
 } from "react-router-dom";
 
-const Home = lazy(() => import('./Home.jsx'));
+const Home = lazy(() => import('./Home'));
 //const Users = lazy(() => import('./Users.jsx'));
-const About = lazy(() => import('./About.jsx'));
+const About = lazy(() => import('./About'));
 
-import Users from './Users.jsx'
+import Users from './Users'
 
 import './index.css';
 
@@ -44,7 +44,7 @@ const App = () => {
                             <Users />
                         </Route>
                         <Route path="/">
-                            <Home />
+                            <Home props1={'MyHome'} props2={1}/>
                         </Route>
                     </Switch>
                 </Suspense>

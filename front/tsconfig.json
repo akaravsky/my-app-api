@@ -1,0 +1,38 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+      "module": "esnext",
+      "moduleResolution": "node",
+      "outDir": "ts-build",
+      "baseUrl": "src",
+      "typeRoots": [
+        "./node_modules/@types"
+      ],
+      "paths": {
+        "react/*": ["src/*"]
+      },
+      "jsx": "react",
+      "target": "es2015",
+      "lib": ["es2017", "dom"],
+      "watch": true,
+      "allowJs": true,
+      "sourceMap": true,
+      "noImplicitAny": true,
+      "noImplicitThis": true,
+      "strictNullChecks": true,
+      "noImplicitReturns": true,
+      "experimentalDecorators": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true
+    },
+    "exclude": [
+      "node_modules",
+      "**/*.js"
+    ],
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "src/**/*.less"
+    ]
+  }
+  
