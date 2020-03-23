@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const expressGraphQL = require('express-graphql');
-const schema = require('./schema/schema')
+const schema = require('./src/schema/schema')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -15,8 +15,8 @@ app.use('/graphql', expressGraphQL({
   graphiql: true
 }))
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req:any, res:any) => res.send('Hello World!'));
 
-app.get('/about/ab', (req, res) => res.json({text: 'This is about!'}));
+app.get('/about/ab', (req:any, res:any) => res.json({text: 'This is about!'}));
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
