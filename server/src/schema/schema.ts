@@ -121,4 +121,21 @@ query 2
       }
 	}
 }
+
+query 3
+{
+    company(id: 2) {
+        id, 
+        name,
+        description,
+        users {
+            id,
+            firstName,
+            age,
+            company{
+                name
+            }
+        }
+    }
+}
 */
