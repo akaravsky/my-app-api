@@ -3,7 +3,7 @@
         "module": "commonjs",
         "target": "es6",
         "noImplicitAny": true,
-        "outDir": "ts-build",
+        "outDir": "ts-build/src",
         "rootDir": "src",
         "sourceMap": true,
     },

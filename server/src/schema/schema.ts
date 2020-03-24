@@ -1,31 +1,63 @@
 const graphql = require('graphql');
 //const fetch = require("node-fetch");
 
-const users = [
-    { id: 23, firstName: 'Bill', age: 20, companyId: 1 },
-    { id: 44, firstName: 'Sara', age: 22, companyId: 2 },
-    { id: 49, firstName: 'Nick', age: 28, companyId: 1 }
-];
+interface IUser {
+    id: number;
+    firstName: string;
+    age: number;
+    companyId: keyof typeof companies.byId;
+}
 
-const companies = [
-    { id: 1, name: 'Apple', description: 'iphone' },
-    { id: 2, name: 'Google', description: 'search' }
-]
+interface ICompany {
+    id: number
+    name: string;
+    description: string;
+}
+
+const users = {
+    byId: {
+        23: { id: 23, firstName: 'Bill', age: 21, companyId: 1 },
+        44: { id: 44, firstName: 'Sara', age: 22, companyId: 2 },
+        49: { id: 49, firstName: 'Nick', age: 28, companyId: 1 }
+    },
+    allIds: [23, 44, 49]
+};
+
+const companies = {
+    byId: {
+        1: {id: 1, name: 'Apple', description: 'iphone' },
+        2: {id: 2, name: 'Google', description: 'search' }
+    },
+    allIds:[1,2]
+}
 
 const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLInt,
-    GraphQLSchema
+    GraphQLSchema,
+    GraphQLList
 } = graphql;
 
 const CompanyType = new GraphQLObjectType({
     name: 'Company',
-    fields: {
+    fields: () => ({
         id: { type: GraphQLInt },
         name: { type: GraphQLString },
-        description: { type: GraphQLString }
-    }
+        description: { type: GraphQLString },
+        users: {
+            type: new GraphQLList(UserType),
+            resolve(parentValue: ICompany, args:any) {
+                return users.allIds.reduce((acc: Array<IUser>, userId: keyof typeof users.byId) => {
+                    const user = users.byId[userId] as IUser
+                    if(user.companyId === parentValue.id){
+                        acc.push(user);
+                    }
+                    return acc
+                }, [])
+            }
+        }
+    })
 });
 
 const UserType = new GraphQLObjectType({
@@ -36,13 +68,12 @@ const UserType = new GraphQLObjectType({
         age: { type: GraphQLInt },
         company: {
             type: CompanyType,
-            resolve(parentValue: any, args: any) {
-
+            resolve(parentValue: IUser, args: any) {
+                return companies.byId[parentValue.companyId]
             }
         }
     }
 });
-console.log('12')
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -50,8 +81,17 @@ const RootQuery = new GraphQLObjectType({
         user: {
             type: UserType,
             args: { id: { type: GraphQLInt } },
-            resolve(parentValue: any, args: any) {
-                return users.find(user => user.id === args.id)
+            resolve(parentValue: any, args: { id: keyof typeof users.byId }) {
+                //return users.find(user => user.id === args.id)
+                return users.byId[args.id]
+            }
+        },
+        company: {
+            type: CompanyType,
+            args: { id: { type: GraphQLInt } },
+            resolve(parentValue: any, args: { id: keyof typeof companies.byId }) {
+                //return users.find(user => user.id === args.id)
+                return companies.byId[args.id]
             }
         }
     }
@@ -62,11 +102,23 @@ module.exports = new GraphQLSchema({
 });
 
 /*
-query
+query 1
 {
-  day(date: "2020-01-03") {
-  	open,
-  	close
+  company(id: 1) {
+  	name,
+  	description
+	}
+}
+
+query 2
+{
+   user(id: 23) {
+  	firstName,
+      age,
+      company: {
+          name,
+          description
+      }
 	}
 }
 */

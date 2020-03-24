@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const expressGraphQL = require('express-graphql');
-const schema = require('./src/schema/schema')
+const schema = require('./schema/schema')
 
 const app = express()
 const port = process.env.PORT || 3000

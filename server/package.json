@@ -2,13 +2,13 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "ts-build/index.js",
+  "main": "ts-build/src/index.js",
   "engines": {
     "node": "8.9.4",
     "npm": "5.6.0"
   },
   "scripts": {
-    "compile": "tsc && node ts-build/index.js",
+    "compile": "tsc && node ts-build/src/index.js",
     "dev": "nodemon -e ts --exec \"npm run compile\""
   },
   "author": "",
