@@ -1,11 +1,22 @@
 const graphql = require('graphql');
 //const fetch = require("node-fetch");
 
+
+
 interface IUser {
     id: number;
     firstName: string;
     age: number;
-    companyId: keyof typeof companies.byId;
+    companyId?: keyof typeof companies.byId;
+}
+
+interface IUsersById {
+    [key: number]: IUser
+}
+
+interface IUsers {
+    byId: IUsersById,
+    allIds: Array<number>
 }
 
 interface ICompany {
@@ -14,7 +25,7 @@ interface ICompany {
     description: string;
 }
 
-const users = {
+const users: IUsers = {
     byId: {
         23: { id: 23, firstName: 'Bill', age: 21, companyId: 1 },
         44: { id: 44, firstName: 'Sara', age: 22, companyId: 2 },
@@ -36,7 +47,9 @@ const {
     GraphQLString,
     GraphQLInt,
     GraphQLSchema,
-    GraphQLList
+    GraphQLList,
+    GraphQLNonNull,
+    GraphQLScalarType
 } = graphql;
 
 const CompanyType = new GraphQLObjectType({
@@ -59,6 +72,14 @@ const CompanyType = new GraphQLObjectType({
         }
     })
 });
+
+/*const UsersType = new GraphQLObjectType({
+    name: 'UsersType',
+    fields: {
+        [fieldName: string]: { type: GraphQLString }
+    }
+});*/
+
 
 const UserType = new GraphQLObjectType({
     name: 'User',
@@ -93,12 +114,54 @@ const RootQuery = new GraphQLObjectType({
                 //return users.find(user => user.id === args.id)
                 return companies.byId[args.id]
             }
+        },
+        /*users: {
+            type: GraphQLObjectType,
+            resolve(parentValue: any){
+                return users.byId
+            }
+        }*/
+    }
+})
+
+const mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addUser: {
+            type: UserType, //type that we return in resolve function
+            args: {
+                firstName: {type: new GraphQLNonNull(GraphQLString)},
+                age: {type: new GraphQLNonNull(GraphQLInt)},
+                companyId: {type: GraphQLString}
+            },
+            resolve(parentValue:any, {firstName, age}:{firstName:string, age:number}) {
+                const id = Math.floor(Math.random()*1000000)
+                const newUser = {id, firstName, age}
+                users.byId[id] = newUser;
+                users.allIds.push(id);
+                return newUser
+            }
+        },
+        deleteUser: {
+            type: UserType,
+            args: {
+                id: {type: new GraphQLNonNull(GraphQLInt)}
+            },
+            resolve(parentValue:any, {id}:{id:number}){
+                delete users.byId[id];
+                const index = users.allIds.indexOf(id);
+                if (index > -1) {
+                    users.allIds.splice(index, 1);
+                }
+                return users.byId[id]
+            }
         }
     }
 })
 
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation
 });
 
 /*
@@ -136,6 +199,30 @@ query 3
                 name
             }
         }
+    }
+}
+
+query 4
+{
+    apple: company(id: 1){
+        ...companyDetails
+    }
+    google: company(id: 2){
+        ...companyDetails
+    }
+}
+fragment companyDetails on Company {
+    id
+    name
+    description
+}
+
+mutation 1
+mutation {
+    addUser(firstName: "Bill", age: 40) {
+        id,
+        firstName,
+        age
     }
 }
 */

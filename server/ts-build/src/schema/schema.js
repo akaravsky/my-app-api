@@ -14,7 +14,7 @@ const companies = {
     },
     allIds: [1, 2]
 };
-const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema, GraphQLList } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema, GraphQLList, GraphQLNonNull, GraphQLScalarType } = graphql;
 const CompanyType = new GraphQLObjectType({
     name: 'Company',
     fields: () => ({
@@ -35,6 +35,12 @@ const CompanyType = new GraphQLObjectType({
         }
     })
 });
+/*const UsersType = new GraphQLObjectType({
+    name: 'UsersType',
+    fields: {
+        [fieldName: string]: { type: GraphQLString }
+    }
+});*/
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: {
@@ -67,11 +73,46 @@ const RootQuery = new GraphQLObjectType({
                 //return users.find(user => user.id === args.id)
                 return companies.byId[args.id];
             }
+        },
+    }
+});
+const mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addUser: {
+            type: UserType,
+            args: {
+                firstName: { type: new GraphQLNonNull(GraphQLString) },
+                age: { type: new GraphQLNonNull(GraphQLInt) },
+                companyId: { type: GraphQLString }
+            },
+            resolve(parentValue, { firstName, age }) {
+                const id = Math.floor(Math.random() * 1000000);
+                const newUser = { id, firstName, age };
+                users.byId[id] = newUser;
+                users.allIds.push(id);
+                return newUser;
+            }
+        },
+        deleteUser: {
+            type: UserType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLInt) }
+            },
+            resolve(parentValue, { id }) {
+                delete users.byId[id];
+                const index = users.allIds.indexOf(id);
+                if (index > -1) {
+                    users.allIds.splice(index, 1);
+                }
+                return users.byId[id];
+            }
         }
     }
 });
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation
 });
 /*
 query 1
@@ -91,6 +132,47 @@ query 2
           name,
           description
       }
+    }
+}
+
+query 3
+{
+    company(id: 2) {
+        id,
+        name,
+        description,
+        users {
+            id,
+            firstName,
+            age,
+            company{
+                name
+            }
+        }
+    }
+}
+
+query 4
+{
+    apple: company(id: 1){
+        ...companyDetails
+    }
+    google: company(id: 2){
+        ...companyDetails
+    }
+}
+fragment companyDetails on Company {
+    id
+    name
+    description
+}
+
+mutation 1
+mutation {
+    addUser(firstName: "Bill", age: 40) {
+        id,
+        firstName,
+        age
     }
 }
 */ 
