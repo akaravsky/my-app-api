@@ -32,7 +32,7 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
 });
 
 const App = () => {
-    const [tab, setTab] = React.useState(0);
+    const [tab, setTab] = React.useState();
 
     return (
         <ApolloProvider client={client}>

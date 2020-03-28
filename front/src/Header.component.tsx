@@ -1,12 +1,28 @@
 import React from 'react';
 import {
-    useHistory
+    useHistory, useLocation
 } from "react-router-dom";
 
 import { AppBar, Tabs, Tab } from '@material-ui/core';
 
 const Header = ({tab, setTab}:{tab:number, setTab:Function}) => {
-    let history = useHistory();
+    const history = useHistory();
+    const location = useLocation();
+
+    React.useEffect(()=>{
+        switch (location.pathname) {
+            case '/':
+                setTab(0);
+                break;
+            case '/users':
+                setTab(1);
+                break;
+            case '/about':
+                setTab(2);
+                break;
+
+        }
+    }, [])
 
     const handleChange = (event: React.ChangeEvent<{}>, newTab: number) => {
         setTab(newTab);
@@ -22,6 +38,9 @@ const Header = ({tab, setTab}:{tab:number, setTab:Function}) => {
                 break;
 
         }
+    }
+    if(tab === undefined ){
+        return null
     }
 
     return (
