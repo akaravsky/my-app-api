@@ -5,11 +5,11 @@ import {
 
 import { AppBar, Tabs, Tab } from '@material-ui/core';
 
-const Header = ({tab, setTab}:{tab:number, setTab:Function}) => {
+const Header = ({ tab, setTab }: { tab: number, setTab: Function }) => {
     const history = useHistory();
     const location = useLocation();
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         switch (location.pathname) {
             case '/':
                 setTab(0);
@@ -39,7 +39,7 @@ const Header = ({tab, setTab}:{tab:number, setTab:Function}) => {
 
         }
     }
-    if(tab === undefined ){
+    if (tab === undefined) {
         return null
     }
 
