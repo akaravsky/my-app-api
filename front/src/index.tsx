@@ -19,8 +19,6 @@ const About = lazy(() => import('./About'));
 
 import UsersList from './UsersList/UsersList.component'
 
-import './index.css';
-
 const cache = new InMemoryCache();
 const link = new HttpLink({
     uri: 'http://localhost:3000/graphql'
@@ -39,21 +37,21 @@ const App = () => {
             <Router>
                 <Header tab={tab} setTab={setTab} />
 
-                {/* A <Switch> looks through its children <Route>s and
+                    {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-                <Suspense fallback={<div>Loading...</div>}>
-                    <Switch>
-                        <Route path="/about">
-                            <About />
-                        </Route>
-                        <Route path="/users">
-                            <UsersList />
-                        </Route>
-                        <Route path="/">
-                            <Home props1={'MyHome'} props2={1} />
-                        </Route>
-                    </Switch>
-                </Suspense>
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Switch>
+                            <Route path="/about">
+                                <About />
+                            </Route>
+                            <Route path="/users">
+                                <UsersList />
+                            </Route>
+                            <Route path="/">
+                                <Home props1={'MyHome'} props2={1} />
+                            </Route>
+                        </Switch>
+                    </Suspense>
             </Router>
         </ApolloProvider>
     )

@@ -2,7 +2,6 @@ const graphql = require('graphql');
 //const fetch = require("node-fetch");
 
 
-
 interface IUser {
     id: number;
     firstName: string;
@@ -73,14 +72,6 @@ const CompanyType = new GraphQLObjectType({
     })
 });
 
-/*const UsersType = new GraphQLObjectType({
-    name: 'UsersType',
-    fields: {
-        [fieldName: string]: { type: GraphQLString }
-    }
-});*/
-
-
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: {
@@ -95,6 +86,8 @@ const UserType = new GraphQLObjectType({
         }
     }
 });
+
+const UsersListType = new GraphQLList(UserType)
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
@@ -115,12 +108,13 @@ const RootQuery = new GraphQLObjectType({
                 return companies.byId[args.id]
             }
         },
-        /*users: {
-            type: GraphQLObjectType,
-            resolve(parentValue: any){
-                return users.byId
+        usersList: {
+            type: UsersListType,
+            args: {},
+            resolve(parentValue:any, args:any) {
+                return users.allIds.map(userId => users.byId[userId]);
             }
-        }*/
+        }
     }
 })
 
@@ -215,6 +209,13 @@ fragment companyDetails on Company {
     id
     name
     description
+}
+
+query 5
+{
+    usersList{
+        firstName
+    }
 }
 
 mutation 1

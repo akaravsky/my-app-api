@@ -1,7 +1,9 @@
 import React, { ComponentType } from 'react';
 import gql from 'graphql-tag';
-import { graphql, DataProps, MutateProps } from 'react-apollo';
 import { useQuery } from '@apollo/react-hooks';
+
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider } from '@material-ui/core';
+import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 
 interface IQuery {
     usersList: Array<IUser>
@@ -21,22 +23,45 @@ const query = gql`
 }
 `;
 
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            display: 'flex',
+            justifyContent: 'center'
+
+        },
+        container: {
+            maxWidth: 360,
+            width: '100%',
+            backgroundColor: theme.palette.background.paper,
+        }
+    }),
+);
+
 const UsersList = (props: any) => {
     const { loading, data = { usersList: [] } } = useQuery<IQuery>(query)
+    const classes = useStyles();
     if (loading) {
         return (<div>Loading...</div>)
     }
 
-    console.log(data);
-
     return (
-        <div>
-            {data.usersList.map((user: IUser) => (
-                <div key={user.id}>
-                    <img src="http://lorempixel.com/50/50" style={{ width: '30px', height: '30px' }} />
-                    <span>{user.firstName}</span>
-                </div>
-            ))}
+        <div className={classes.root}>
+            <div className={classes.container}>
+            <List component="nav">
+                {data.usersList.map((user: IUser) => (
+                    <div key={user.id}>
+                        <ListItem button>
+                            <ListItemAvatar>
+                                <Avatar alt="Remy Sharp" src="http://lorempixel.com/50/50" />
+                            </ListItemAvatar>
+                            <ListItemText primary={user.firstName} />
+                        </ListItem>
+                        <Divider />
+                    </div>
+                ))}
+            </List>
+            </div>
         </div>
     )
 }

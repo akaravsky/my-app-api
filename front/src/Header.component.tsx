@@ -5,7 +5,7 @@ import {
 
 import { AppBar, Tabs, Tab } from '@material-ui/core';
 
-const Header = ({ tab, setTab }: { tab: number, setTab: Function }) => {
+const Header = ({ tab, setTab }: { tab: number | undefined, setTab: Function }) => {
     const history = useHistory();
     const location = useLocation();
 

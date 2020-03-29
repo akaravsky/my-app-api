@@ -35,12 +35,6 @@ const CompanyType = new GraphQLObjectType({
         }
     })
 });
-/*const UsersType = new GraphQLObjectType({
-    name: 'UsersType',
-    fields: {
-        [fieldName: string]: { type: GraphQLString }
-    }
-});*/
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: {
@@ -55,6 +49,7 @@ const UserType = new GraphQLObjectType({
         }
     }
 });
+const UsersListType = new GraphQLList(UserType);
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -74,6 +69,13 @@ const RootQuery = new GraphQLObjectType({
                 return companies.byId[args.id];
             }
         },
+        usersList: {
+            type: UsersListType,
+            args: {},
+            resolve(parentValue, args) {
+                return users.allIds.map(userId => users.byId[userId]);
+            }
+        }
     }
 });
 const mutation = new GraphQLObjectType({
@@ -165,6 +167,13 @@ fragment companyDetails on Company {
     id
     name
     description
+}
+
+query 5
+{
+    usersList{
+        firstName
+    }
 }
 
 mutation 1
