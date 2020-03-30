@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 
 import ApolloClient from 'apollo-client';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 
@@ -18,6 +18,7 @@ const Home = lazy(() => import('./Home'));
 const About = lazy(() => import('./About'));
 
 import UsersList from './UsersList/UsersList.component'
+import CreateUserForm from './CreateUserForm.component';
 
 const cache = new InMemoryCache();
 const link = new HttpLink({
@@ -37,21 +38,24 @@ const App = () => {
             <Router>
                 <Header tab={tab} setTab={setTab} />
 
-                    {/* A <Switch> looks through its children <Route>s and
+                {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <Switch>
-                            <Route path="/about">
-                                <About />
-                            </Route>
-                            <Route path="/users">
-                                <UsersList />
-                            </Route>
-                            <Route path="/">
-                                <Home props1={'MyHome'} props2={1} />
-                            </Route>
-                        </Switch>
-                    </Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <Switch>
+                        <Route path="/users/new">
+                            <CreateUserForm />
+                        </Route>
+                        <Route path="/users">
+                            <UsersList />
+                        </Route>
+                        <Route path="/about">
+                            <About />
+                        </Route>
+                        <Route path="/">
+                            <Home props1={'MyHome'} props2={1} />
+                        </Route>
+                    </Switch>
+                </Suspense>
             </Router>
         </ApolloProvider>
     )

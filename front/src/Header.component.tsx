@@ -17,8 +17,11 @@ const Header = ({ tab, setTab }: { tab: number | undefined, setTab: Function }) 
             case '/users':
                 setTab(1);
                 break;
-            case '/about':
+            case '/users/new':
                 setTab(2);
+                break;
+            case '/about':
+                setTab(3);
                 break;
 
         }
@@ -34,6 +37,9 @@ const Header = ({ tab, setTab }: { tab: number | undefined, setTab: Function }) 
                 history.push('/users')
                 break;
             case 2:
+                history.push('/users/new')
+                break;
+            case 3:
                 history.push('/about')
                 break;
 
@@ -48,6 +54,7 @@ const Header = ({ tab, setTab }: { tab: number | undefined, setTab: Function }) 
             <Tabs value={tab} onChange={handleChange} >
                 <Tab label="Home" />
                 <Tab label="Users" />
+                <Tab label="Create user" />
                 <Tab label="About" />
             </Tabs>
         </AppBar>
