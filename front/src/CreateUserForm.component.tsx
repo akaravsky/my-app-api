@@ -6,6 +6,7 @@ import { useMutation } from '@apollo/react-hooks';
 
 import { TextField } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -22,30 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const CreateUserForm = (props: any) => {
-    const classes = useStyles();
-    const [addUser, { data }] = useMutation(mutation);
-    const [value, setValue] = React.useState<string>('');
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue(e.target.value);
-    }
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault
-        addUser({variables:{firstName: value}});
-        //setValue('');
-    }
-
-    return (
-        <div className={classes.root}>
-            <form className={classes.container} onSubmit={handleSubmit}>
-                <TextField value={value} onChange={handleChange} label="New user" />
-            </form>
-        </div>
-    )
-}
-
 const mutation = gql`
     mutation AddUser($firstName: String!) {
         addUser(firstName: $firstName){
@@ -53,5 +30,31 @@ const mutation = gql`
         }
     }
 `;
+
+const CreateUserForm = (props: any) => {
+    const classes = useStyles();
+    const history = useHistory();
+    const [addUser, { data }] = useMutation(mutation);
+    const [value, setValue] = React.useState<string>('');
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+    }
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        await addUser({ variables: { firstName: value } });
+        history.push('/users')
+        props.setTab(1);
+    }
+    return (
+        <div className={classes.root}>
+            <form className={classes.container} onSubmit={handleSubmit}>
+                <TextField value={value} onChange={handleChange} label="New user" />
+            </form>
+        </div>
+    )
+
+}
 
 export default CreateUserForm;

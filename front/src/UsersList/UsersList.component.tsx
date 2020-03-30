@@ -39,7 +39,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const UsersList = (props: any) => {
-    const { loading, data = { usersList: [] } } = useQuery<IQuery>(query)
+    const { loading, data = { usersList: [] } } = useQuery<IQuery>(query, {
+        pollInterval: 500,
+    })
+    console.log('data, loading', data, loading)
     const classes = useStyles();
     if (loading) {
         return (<div>Loading...</div>)

@@ -43,7 +43,7 @@ const App = () => {
                 <Suspense fallback={<div>Loading...</div>}>
                     <Switch>
                         <Route path="/users/new">
-                            <CreateUserForm />
+                            <CreateUserForm setTab={setTab}/>
                         </Route>
                         <Route path="/users">
                             <UsersList />
