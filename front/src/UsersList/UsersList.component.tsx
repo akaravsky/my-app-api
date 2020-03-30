@@ -1,9 +1,10 @@
-import React, { ComponentType } from 'react';
-import gql from 'graphql-tag';
+import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import fetchUsersList from '../queries/fetchUsersList';
+
 
 interface IQuery {
     usersList: Array<IUser>
@@ -14,14 +15,6 @@ interface IUser {
     id: number
 }
 
-const query = gql`
-{
-    usersList{
-        id
-        firstName
-    }
-}
-`;
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -39,9 +32,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const UsersList = (props: any) => {
-    const { loading, data = { usersList: [] } } = useQuery<IQuery>(query, {
+    const { loading, data = { usersList: [] } } = useQuery<IQuery>(fetchUsersList/*, {
         pollInterval: 500,
-    })
+    }*/)
     console.log('data, loading', data, loading)
     const classes = useStyles();
     if (loading) {

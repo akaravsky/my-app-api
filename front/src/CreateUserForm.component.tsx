@@ -7,6 +7,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { TextField } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import fetchUsersList from './queries/fetchUsersList';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -41,9 +42,12 @@ const CreateUserForm = (props: any) => {
         setValue(e.target.value);
     }
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await addUser({ variables: { firstName: value } });
+        addUser({ 
+            variables: { firstName: value },
+            refetchQueries: [{query: fetchUsersList}]
+         });
         history.push('/users')
         props.setTab(1);
     }

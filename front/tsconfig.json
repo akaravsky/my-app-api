@@ -4,13 +4,10 @@
       "module": "esnext",
       "moduleResolution": "node",
       "outDir": "ts-build",
-      "baseUrl": "src",
+      "baseUrl": "./src/",
       "typeRoots": [
         "./node_modules/@types"
       ],
-      "paths": {
-        "react/*": ["src/*"]
-      },
       "jsx": "react",
       "target": "es2015",
       "lib": ["es2017", "dom"],
