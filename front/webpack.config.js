@@ -15,7 +15,11 @@ const config = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".jsx"]
+        extensions: [".ts", ".tsx", ".js", ".jsx"],
+        modules: [
+            path.resolve('./src'), //for non relative paths
+            path.resolve('./node_modules')
+        ]
     },
     module: {
         rules: [
