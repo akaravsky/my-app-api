@@ -1,13 +1,12 @@
 import React, { ChangeEvent, FormEvent } from 'react';
 
-import { graphql } from 'graphql';
 import gql from 'graphql-tag';
 import { useMutation } from '@apollo/react-hooks';
 
 import { TextField } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-import fetchUsersList from 'queries/fetchUsersList';
+import fetchUsersList from './queries/fetchUsersList';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
