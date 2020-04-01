@@ -125,7 +125,7 @@ const mutation = new GraphQLObjectType({
             type: UserType, //type that we return in resolve function
             args: {
                 firstName: {type: new GraphQLNonNull(GraphQLString)},
-                age: {type: new GraphQLNonNull(GraphQLInt)},
+                age: {type:  GraphQLInt},
                 companyId: {type: GraphQLString}
             },
             resolve(parentValue:any, {firstName, age}:{firstName:string, age:number}) {

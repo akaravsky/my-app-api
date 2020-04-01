@@ -19,8 +19,11 @@ const About = lazy(() => import('./About'));
 
 import UsersList from './UsersList/UsersList.component'
 import CreateUserForm from './CreateUserForm.component';
+import UserDetails from './UserDetails.component';
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({
+    dataIdFromObject: o => o.id //we can add some identifier that helps apollo know which component should be updated after changing 
+});
 const link = new HttpLink({
     uri: 'http://localhost:3000/graphql'
 });
@@ -44,6 +47,9 @@ const App = () => {
                     <Switch>
                         <Route path="/users/new">
                             <CreateUserForm setTab={setTab}/>
+                        </Route>
+                        <Route path="/users/:id">
+                            <UserDetails />
                         </Route>
                         <Route path="/users">
                             <UsersList />

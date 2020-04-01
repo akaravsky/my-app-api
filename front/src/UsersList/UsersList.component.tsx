@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import fetchUsersList from '../queries/fetchUsersList';
+import { useHistory } from 'react-router-dom';
 
 
 interface IQuery {
@@ -42,8 +43,9 @@ const mutation = gql`
 `;
 
 const UsersList = (props: any) => {
-    const [deleteUser, { data: deletedDdata }] = useMutation(mutation);
-    const { loading, data = { usersList: [] } } = useQuery<IQuery>(fetchUsersList/*, {
+    const history = useHistory();
+    const [deleteUser, { data: deletedData }] = useMutation(mutation);
+    const { loading, data = { usersList: [] }, refetch } = useQuery<IQuery>(fetchUsersList/*, {
         pollInterval: 500,
     }*/)
     const classes = useStyles();
@@ -51,8 +53,11 @@ const UsersList = (props: any) => {
         return (<div>Loading...</div>)
     }
 
-    const onDeleteUser = (id: number) => {
-        deleteUser({ variables: { id } })
+    const onDeleteUser = async (id: number) => {
+        await deleteUser({ 
+            variables: { id }
+        });
+        refetch();
     }
 
     return (
@@ -65,7 +70,7 @@ const UsersList = (props: any) => {
                                 <ListItemAvatar>
                                     <Avatar alt="Remy Sharp" src="http://lorempixel.com/50/50" onClick={() => { onDeleteUser(user.id) }} />
                                 </ListItemAvatar>
-                                <ListItemText primary={user.firstName} />
+                                <ListItemText primary={user.firstName} onClick={()=> {history.push(`/users/${user.id}`)}}/>
                             </ListItem>
                             <Divider />
                         </div>
