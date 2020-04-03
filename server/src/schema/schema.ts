@@ -35,11 +35,13 @@ const users: IUsers = {
 
 const companies = {
     byId: {
-        1: {id: 1, name: 'Apple', description: 'iphone' },
-        2: {id: 2, name: 'Google', description: 'search' }
+        1: { id: 1, name: 'Apple', description: 'iphone' },
+        2: { id: 2, name: 'Google', description: 'search' }
     },
-    allIds:[1,2]
+    allIds: [1, 2]
 }
+
+let likes = 0;
 
 const {
     GraphQLObjectType,
@@ -59,10 +61,10 @@ const CompanyType = new GraphQLObjectType({
         description: { type: GraphQLString },
         users: {
             type: new GraphQLList(UserType),
-            resolve(parentValue: ICompany, args:any) {
+            resolve(parentValue: ICompany, args: any) {
                 return users.allIds.reduce((acc: Array<IUser>, userId: keyof typeof users.byId) => {
                     const user = users.byId[userId] as IUser
-                    if(user.companyId === parentValue.id){
+                    if (user.companyId === parentValue.id) {
                         acc.push(user);
                     }
                     return acc
@@ -111,8 +113,15 @@ const RootQuery = new GraphQLObjectType({
         usersList: {
             type: UsersListType,
             args: {},
-            resolve(parentValue:any, args:any) {
+            resolve(parentValue: any, args: any) {
                 return users.allIds.map(userId => users.byId[userId]);
+            }
+        },
+        likes: {
+            type: GraphQLInt,
+            args: {},
+            resolve(parentValue: any, args: any) {
+                return likes
             }
         }
     }
@@ -124,13 +133,13 @@ const mutation = new GraphQLObjectType({
         addUser: {
             type: UserType, //type that we return in resolve function
             args: {
-                firstName: {type: new GraphQLNonNull(GraphQLString)},
-                age: {type:  GraphQLInt},
-                companyId: {type: GraphQLString}
+                firstName: { type: new GraphQLNonNull(GraphQLString) },
+                age: { type: GraphQLInt },
+                companyId: { type: GraphQLString }
             },
-            resolve(parentValue:any, {firstName, age}:{firstName:string, age:number}) {
-                const id = Math.floor(Math.random()*1000000)
-                const newUser = {id, firstName, age}
+            resolve(parentValue: any, { firstName, age }: { firstName: string, age: number }) {
+                const id = Math.floor(Math.random() * 1000000)
+                const newUser = { id, firstName, age }
                 users.byId[id] = newUser;
                 users.allIds.push(id);
                 return newUser
@@ -139,9 +148,9 @@ const mutation = new GraphQLObjectType({
         deleteUser: {
             type: UserType,
             args: {
-                id: {type: new GraphQLNonNull(GraphQLInt)}
+                id: { type: new GraphQLNonNull(GraphQLInt) }
             },
-            resolve(parentValue:any, {id}:{id:number}){
+            resolve(parentValue: any, { id }: { id: number }) {
                 delete users.byId[id];
                 const index = users.allIds.indexOf(id);
                 if (index > -1) {
@@ -149,9 +158,29 @@ const mutation = new GraphQLObjectType({
                 }
                 return users.byId[id]
             }
+        },
+        like: {
+            type: GraphQLInt,
+            args: {},
+            resolve: async (parentValue: any, args: any) => {
+                await sleep(2000);
+                likes = likes + 1
+            }
         }
     }
 })
+
+async function init() {
+    console.log(1);
+    await sleep(1000);
+    console.log(2);
+}
+
+function sleep(ms:number) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+}
 
 module.exports = new GraphQLSchema({
     query: RootQuery,
@@ -182,7 +211,7 @@ query 2
 query 3
 {
     company(id: 2) {
-        id, 
+        id,
         name,
         description,
         users {

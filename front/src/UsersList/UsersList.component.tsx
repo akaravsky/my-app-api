@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider } from '@material-ui/core';
-import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 import fetchUsersList from '../queries/fetchUsersList';
 import { useHistory } from 'react-router-dom';
 
@@ -19,7 +19,7 @@ interface IUser {
 
 
 const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
+    ({
         root: {
             display: 'flex',
             justifyContent: 'center'
