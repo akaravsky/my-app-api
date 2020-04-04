@@ -41,7 +41,7 @@ const companies = {
     allIds: [1, 2]
 }
 
-let likes = 0;
+let likes = {myLikes: 0, id: 111};
 
 const {
     GraphQLObjectType,
@@ -91,6 +91,14 @@ const UserType = new GraphQLObjectType({
 
 const UsersListType = new GraphQLList(UserType)
 
+const LikesType = new GraphQLObjectType({
+    name: 'Likes1',
+    fields: {
+        id: { type: GraphQLInt },
+        myLikes: { type: GraphQLInt }
+    }
+})
+
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -118,8 +126,8 @@ const RootQuery = new GraphQLObjectType({
             }
         },
         likes: {
-            type: GraphQLInt,
-            args: {},
+            type: LikesType,
+            args: { },
             resolve(parentValue: any, args: any) {
                 return likes
             }
@@ -159,22 +167,17 @@ const mutation = new GraphQLObjectType({
                 return users.byId[id]
             }
         },
-        like: {
-            type: GraphQLInt,
-            args: {},
+        addLikes: {
+            type: LikesType,
+            args: {id: { type: new GraphQLNonNull(GraphQLInt) }},
             resolve: async (parentValue: any, args: any) => {
                 await sleep(2000);
-                likes = likes + 1
+                likes.myLikes = likes.myLikes +1
+                return likes
             }
         }
     }
 })
-
-async function init() {
-    console.log(1);
-    await sleep(1000);
-    console.log(2);
-}
 
 function sleep(ms:number) {
     return new Promise((resolve) => {

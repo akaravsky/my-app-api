@@ -21,13 +21,19 @@ const useStyles = makeStyles({
 
 const fetchLikes = gql`
 {
-    likes
+    likes {
+        id
+        myLikes
+    }
 }
 `;
 
 const mutation = gql`
 mutation {
-    like
+    addLikes(id: 111){
+        myLikes,
+        id
+    }
 }
 `;
 
@@ -35,8 +41,8 @@ const About = () => {
     const [about, setAbout] = React.useState('')
     const classes = useStyles();
 
-    const { loading, data, refetch } = useQuery<any>(fetchLikes);
-    const [like] = useMutation(mutation);
+    const { loading, data: initData } = useQuery<any>(fetchLikes);
+    const [like, {data: dataAfterMutation}] = useMutation(mutation);
 
     /*const onClick = () => {
         setAbout('Loading...')
@@ -53,17 +59,31 @@ const About = () => {
         setAbout(json.text);
     }
 
-    const onClickThumb = async () => {
-        await like(); 
-        refetch()
+    const onClickThumb = (likesBeforeClick:any) => {
+        like({
+            optimisticResponse: {
+                __typename: 'Mutation',
+                addLikes: {
+                    __typename: 'Likes1',
+                    id:111,
+                    myLikes: likesBeforeClick?.myLikes + 1 // for imidiate update
+                }
+            }
+        });
+        //refetch()
     }
-    console.log(data);
+    if(loading){
+        return null
+    }
+
+    console.log(dataAfterMutation, initData)
+
     return (
         <div className={classes.root}>
             <div className={classes.clickLabel} onClick={onClickAbout}>Click to load 'about'</div>
-            <ThumbUpIcon className={classes.clickLabel} onClick={onClickThumb} />
+            <ThumbUpIcon className={classes.clickLabel} onClick={() => onClickThumb(dataAfterMutation?.likes ?? initData?.likes)} />
             <div>{about}</div>
-            <div>{loading ? 'loading...' : data.likes}</div>
+            <div>{dataAfterMutation?.likes?.myLikes ?? initData?.likes?.myLikes}</div>
         </div>)
 }
 
