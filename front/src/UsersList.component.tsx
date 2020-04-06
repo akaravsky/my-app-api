@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider } from '@material-ui/core';
 import { Theme, makeStyles } from '@material-ui/core/styles';
-import fetchUsersList from '../queries/fetchUsersList';
+import fetchUsersList from './queries/fetchUsersList';
 import { useHistory } from 'react-router-dom';
 
 

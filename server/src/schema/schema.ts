@@ -1,4 +1,5 @@
 const graphql = require('graphql');
+const {companies, users, likes} = require('../db');
 //const fetch = require("node-fetch");
 
 
@@ -23,25 +24,6 @@ interface ICompany {
     name: string;
     description: string;
 }
-
-const users: IUsers = {
-    byId: {
-        23: { id: 23, firstName: 'Bill', age: 21, companyId: 1 },
-        44: { id: 44, firstName: 'Sara', age: 22, companyId: 2 },
-        49: { id: 49, firstName: 'Nick', age: 28, companyId: 1 }
-    },
-    allIds: [23, 44, 49]
-};
-
-const companies = {
-    byId: {
-        1: { id: 1, name: 'Apple', description: 'iphone' },
-        2: { id: 2, name: 'Google', description: 'search' }
-    },
-    allIds: [1, 2]
-}
-
-let likes = {myLikes: 0, id: 111};
 
 const {
     GraphQLObjectType,
@@ -80,6 +62,7 @@ const UserType = new GraphQLObjectType({
         id: { type: GraphQLInt },
         firstName: { type: GraphQLString },
         age: { type: GraphQLInt },
+        email: { type: GraphQLString },
         company: {
             type: CompanyType,
             resolve(parentValue: IUser, args: any) {
@@ -122,12 +105,12 @@ const RootQuery = new GraphQLObjectType({
             type: UsersListType,
             args: {},
             resolve(parentValue: any, args: any) {
-                return users.allIds.map(userId => users.byId[userId]);
+                return users.allIds.map((userId:number) => users.byId[userId]);
             }
         },
         likes: {
             type: LikesType,
-            args: { },
+            args: {},
             resolve(parentValue: any, args: any) {
                 return likes
             }
@@ -169,17 +152,27 @@ const mutation = new GraphQLObjectType({
         },
         addLikes: {
             type: LikesType,
-            args: {id: { type: new GraphQLNonNull(GraphQLInt) }},
+            args: { id: { type: new GraphQLNonNull(GraphQLInt) } },
             resolve: async (parentValue: any, args: any) => {
                 await sleep(2000);
-                likes.myLikes = likes.myLikes +1
+                likes.myLikes = likes.myLikes + 1
                 return likes
+            }
+        },
+        signup: {
+            type: UserType,
+            args: {
+                email: { type: GraphQLString },
+                password: { type: GraphQLString }
+            },
+            resolve(parentValue:any, args:any, request:any){
+
             }
         }
     }
 })
 
-function sleep(ms:number) {
+function sleep(ms: number) {
     return new Promise((resolve) => {
         setTimeout(resolve, ms);
     });
