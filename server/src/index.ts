@@ -1,11 +1,19 @@
-const express = require('express')
-const cors = require('cors')
+import { connect } from "http2";
+
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
 const expressGraphQL = require('express-graphql');
 
 const session = require('express-session');
 const passport = require('passport');
 
-const schema = require('./schema/schema')
+const schema = require('./schema/schema');
+
+mongoose.connect('mongodb://localhost/users_test');
+mongoose.connection
+  .once('open', () => console.log('MONGO GO!'))
+  .on('error', (error:any) => console.warn('Warning', error));
 
 const app = express()
 const port = process.env.PORT || 3000
