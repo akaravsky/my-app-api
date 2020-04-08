@@ -14,7 +14,7 @@ interface IQuery {
 
 interface IUser {
     firstName: string,
-    id: number
+    id: string
 }
 
 
@@ -53,13 +53,13 @@ const UsersList = (props: any) => {
         return (<div>Loading...</div>)
     }
 
-    const onDeleteUser = async (id: number) => {
+    const onDeleteUser = async (id: string) => {
         await deleteUser({ 
             variables: { id }
         });
         refetch();
     }
-
+    console.log(data)
     return (
         <div className={classes.root}>
             <div className={classes.container}>

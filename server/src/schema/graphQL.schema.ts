@@ -1,5 +1,6 @@
 const graphql = require('graphql');
-const {companies, users, likes} = require('../db');
+const User = require('./mongoose.schema');
+const { companies, users, likes } = require('../db');
 //const fetch = require("node-fetch");
 
 
@@ -59,7 +60,7 @@ const CompanyType = new GraphQLObjectType({
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: {
-        id: { type: GraphQLInt },
+        id: { type: GraphQLString },
         firstName: { type: GraphQLString },
         age: { type: GraphQLInt },
         email: { type: GraphQLString },
@@ -104,8 +105,12 @@ const RootQuery = new GraphQLObjectType({
         usersList: {
             type: UsersListType,
             args: {},
-            resolve(parentValue: any, args: any) {
-                return users.allIds.map((userId:number) => users.byId[userId]);
+            resolve: async (parentValue: any, args: any) => {
+                const usersFromDB = await User.find({});
+                //console.log('DB', usersFromDB);
+                //console.log('Loc', users.allIds.map((userId: number) => users.byId[userId]));
+                //return users.allIds.map((userId: number) => users.byId[userId]);
+                return usersFromDB.map((user:any) => ({id: user._id, firstName:user.name}))
             }
         },
         likes: {
@@ -128,11 +133,14 @@ const mutation = new GraphQLObjectType({
                 age: { type: GraphQLInt },
                 companyId: { type: GraphQLString }
             },
-            resolve(parentValue: any, { firstName, age }: { firstName: string, age: number }) {
-                const id = Math.floor(Math.random() * 1000000)
+            resolve: async (parentValue: any, { firstName, age }: { firstName: string, age: number }) => {
+                /*const id = Math.floor(Math.random() * 1000000)
                 const newUser = { id, firstName, age }
                 users.byId[id] = newUser;
                 users.allIds.push(id);
+                return newUser*/
+                const newUser = new User({name: firstName}); // still not saved in db
+                await newUser.save();
                 return newUser
             }
         },
@@ -165,7 +173,7 @@ const mutation = new GraphQLObjectType({
                 email: { type: GraphQLString },
                 password: { type: GraphQLString }
             },
-            resolve(parentValue:any, args:any, request:any){
+            resolve(parentValue: any, args: any, request: any) {
 
             }
         }

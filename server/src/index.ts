@@ -5,12 +5,12 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const expressGraphQL = require('express-graphql');
 
-const session = require('express-session');
-const passport = require('passport');
+//const session = require('express-session');
+//const passport = require('passport');
 
-const schema = require('./schema/schema');
+const schema = require('./schema/graphQL.schema');
 
-mongoose.connect('mongodb://localhost/users_test');
+mongoose.connect('mongodb://localhost/users_test', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection
   .once('open', () => console.log('MONGO GO!'))
   .on('error', (error:any) => console.warn('Warning', error));
