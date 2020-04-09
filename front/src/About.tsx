@@ -76,8 +76,6 @@ const About = () => {
         return null
     }
 
-    console.log(dataAfterMutation, initData)
-
     return (
         <div className={classes.root}>
             <div className={classes.clickLabel} onClick={onClickAbout}>Click to load 'about'</div>

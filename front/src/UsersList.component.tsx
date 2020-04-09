@@ -13,7 +13,7 @@ interface IQuery {
 }
 
 interface IUser {
-    firstName: string,
+    name: string,
     id: string
 }
 
@@ -34,10 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const mutation = gql`
-    mutation DeleteUser($id: Int!) {
+    mutation DeleteUser($id: String!) {
     deleteUser(id: $id) {
         id,
-        firstName
+        name
     }
 }
 `;
@@ -70,7 +70,7 @@ const UsersList = (props: any) => {
                                 <ListItemAvatar>
                                     <Avatar alt="Remy Sharp" src="http://lorempixel.com/50/50" onClick={() => { onDeleteUser(user.id) }} />
                                 </ListItemAvatar>
-                                <ListItemText primary={user.firstName} onClick={()=> {history.push(`/users/${user.id}`)}}/>
+                                <ListItemText primary={user.name} onClick={()=> {history.push(`/users/${user.id}`)}}/>
                             </ListItem>
                             <Divider />
                         </div>

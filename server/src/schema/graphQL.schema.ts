@@ -6,7 +6,7 @@ const { companies, users, likes } = require('../db');
 
 interface IUser {
     id: number;
-    firstName: string;
+    name: string;
     age: number;
     companyId?: keyof typeof companies.byId;
 }
@@ -61,7 +61,7 @@ const UserType = new GraphQLObjectType({
     name: 'User',
     fields: {
         id: { type: GraphQLString },
-        firstName: { type: GraphQLString },
+        name: { type: GraphQLString },
         age: { type: GraphQLInt },
         email: { type: GraphQLString },
         company: {
@@ -88,10 +88,16 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         user: {
             type: UserType,
-            args: { id: { type: GraphQLInt } },
-            resolve(parentValue: any, args: { id: keyof typeof users.byId }) {
+            args: { id: { type: GraphQLString } },
+            resolve: async(parentValue: any, args: { id: string }) => {
                 //return users.find(user => user.id === args.id)
-                return users.byId[args.id]
+                //return users.byId[args.id]
+
+                //MONGO
+                const userFromDB = await User.findOne({_id: args.id});
+                return {name: userFromDB.name, id: userFromDB._id}
+
+
             }
         },
         company: {
@@ -110,7 +116,7 @@ const RootQuery = new GraphQLObjectType({
                 //console.log('DB', usersFromDB);
                 //console.log('Loc', users.allIds.map((userId: number) => users.byId[userId]));
                 //return users.allIds.map((userId: number) => users.byId[userId]);
-                return usersFromDB.map((user:any) => ({id: user._id, firstName:user.name}))
+                return usersFromDB.map((user:any) => ({id: user._id, name:user.name}))
             }
         },
         likes: {
@@ -129,17 +135,20 @@ const mutation = new GraphQLObjectType({
         addUser: {
             type: UserType, //type that we return in resolve function
             args: {
-                firstName: { type: new GraphQLNonNull(GraphQLString) },
+                name: { type: new GraphQLNonNull(GraphQLString) },
                 age: { type: GraphQLInt },
                 companyId: { type: GraphQLString }
             },
-            resolve: async (parentValue: any, { firstName, age }: { firstName: string, age: number }) => {
+            resolve: async (parentValue: any, { name }: { name: string }) => {
+                //OBJECT
                 /*const id = Math.floor(Math.random() * 1000000)
                 const newUser = { id, firstName, age }
                 users.byId[id] = newUser;
                 users.allIds.push(id);
                 return newUser*/
-                const newUser = new User({name: firstName}); // still not saved in db
+
+                //MONGO
+                const newUser = new User({name}); // still not saved in db
                 await newUser.save();
                 return newUser
             }
@@ -147,15 +156,21 @@ const mutation = new GraphQLObjectType({
         deleteUser: {
             type: UserType,
             args: {
-                id: { type: new GraphQLNonNull(GraphQLInt) }
+                id: { type: new GraphQLNonNull(GraphQLString) }
             },
-            resolve(parentValue: any, { id }: { id: number }) {
-                delete users.byId[id];
+            resolve: async(parentValue: any, { id }: { id: string }) => {
+                //OBJECT
+                /*delete users.byId[id];
                 const index = users.allIds.indexOf(id);
                 if (index > -1) {
                     users.allIds.splice(index, 1);
                 }
-                return users.byId[id]
+                return users.byId[id]*/
+
+                //MONGO
+               // User.remove({name:name}) //remove all users with criteria
+               // User.findOneAndRemove({name: name})
+               await User.findByIdAndRemove(id, {useFindAndModify:false});
             }
         },
         addLikes: {

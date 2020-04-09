@@ -24,9 +24,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const mutation = gql`
-    mutation AddUser($firstName: String!) {
-        addUser(firstName: $firstName){
-            firstName
+    mutation AddUser($name: String!) {
+        addUser(name: $name){
+            name
         }
     }
 `;
@@ -44,7 +44,7 @@ const CreateUserForm = (props: any) => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         addUser({ 
-            variables: { firstName: value },
+            variables: { name: value },
             refetchQueries: [{query: fetchUsersList}]
          });
         history.push('/users')

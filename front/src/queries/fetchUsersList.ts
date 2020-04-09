@@ -4,7 +4,7 @@ export default gql`
 {
     usersList{
         id
-        firstName
+        name
     }
 }
 `;
