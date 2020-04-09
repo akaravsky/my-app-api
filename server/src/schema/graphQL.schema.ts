@@ -173,6 +173,27 @@ const mutation = new GraphQLObjectType({
                await User.findByIdAndRemove(id, {useFindAndModify:false});
             }
         },
+        updateUser: {
+            type: UserType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLString) },
+                name: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: async(parentValue: any, { id, name }: { id: string, name: string }) => {
+                //OBJECT
+                /*delete users.byId[id];
+                const index = users.allIds.indexOf(id);
+                if (index > -1) {
+                    users.allIds.splice(index, 1);
+                }
+                return users.byId[id]*/
+
+                //MONGO
+               // User.update({name: oldName}, {name: newName}) //update all users with criteria
+               // User.findOneAndUpdate({name: oldName}, {name: newName})
+               await User.findByIdAndUpdate(id, {name});
+            }
+        },
         addLikes: {
             type: LikesType,
             args: { id: { type: new GraphQLNonNull(GraphQLInt) } },

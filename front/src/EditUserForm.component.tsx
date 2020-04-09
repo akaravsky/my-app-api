@@ -35,7 +35,7 @@ const GET_USER = gql`
 
 const mutation = gql`
     mutation EditUser($name: String!, $id: String!) {
-        editUser(name: $name, id: $id){
+        updateUser(name: $name, id: $id){
             name,
             id
         }
@@ -66,7 +66,7 @@ const EditUserForm = (props: any) => {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         editUser({
-            variables: { name: formName },
+            variables: { name: formName, id: id },
             refetchQueries: [{ query: fetchUsersList }]
         });
         history.push('/users')

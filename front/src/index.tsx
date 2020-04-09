@@ -19,7 +19,6 @@ const About = lazy(() => import('./About'));
 
 import UsersList from './UsersList.component'
 import CreateUserForm from './CreateUserForm.component';
-import UserDetails from './UserDetails.component';
 import EditUserForm from 'EditUserForm.component';
 
 const cache = new InMemoryCache({
