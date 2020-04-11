@@ -64,6 +64,7 @@ const UserType = new GraphQLObjectType({
         name: { type: GraphQLString },
         age: { type: GraphQLInt },
         email: { type: GraphQLString },
+        likes:{ type: GraphQLInt },
         company: {
             type: CompanyType,
             resolve(parentValue: IUser, args: any) {
@@ -148,7 +149,7 @@ const mutation = new GraphQLObjectType({
                 return newUser*/
 
                 //MONGO
-                const newUser = new User({name}); // still not saved in db
+                const newUser = new User({name, likes: 0}); // still not saved in db
                 await newUser.save();
                 return newUser
             }
@@ -173,7 +174,7 @@ const mutation = new GraphQLObjectType({
                await User.findByIdAndRemove(id, {useFindAndModify:false});
             }
         },
-        updateUser: {
+        updateUserName: {
             type: UserType,
             args: {
                 id: { type: new GraphQLNonNull(GraphQLString) },
@@ -192,6 +193,16 @@ const mutation = new GraphQLObjectType({
                // User.update({name: oldName}, {name: newName}) //update all users with criteria
                // User.findOneAndUpdate({name: oldName}, {name: newName})
                await User.findByIdAndUpdate(id, {name});
+            }
+        },
+        updateUserLikes: {
+            type: UserType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLString) }
+            },
+            resolve: async(parentValue: any, { id }: { id: string }) => {
+               /*const user = User.findOne({id}) 
+               await User.findByIdAndUpdate(id, {likes});*/
             }
         },
         addLikes: {

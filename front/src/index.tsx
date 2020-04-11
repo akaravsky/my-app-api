@@ -49,7 +49,7 @@ const App = () => {
                             <CreateUserForm setTab={setTab}/>
                         </Route>
                         <Route path="/users/:id">
-                            <EditUserForm />
+                            <EditUserForm setTab={setTab}/>
                         </Route>
                         <Route path="/users">
                             <UsersList />

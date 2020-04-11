@@ -50,9 +50,14 @@ const EditUserForm = (props: any) => {
 
     const { loading, error, data: { user } = { user: {} } } = useQuery<any>(GET_USER, {
         variables: { id },
+        fetchPolicy: "no-cache"
     })
 
     const [formName, setFormName] = React.useState<string>('');
+
+    React.useEffect(()=>{
+        props.setTab(1)
+    },[])
 
     React.useEffect(() => {
         setFormName(user.name)

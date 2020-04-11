@@ -2,8 +2,10 @@ import React from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
-import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider } from '@material-ui/core';
+import { List, ListItem, ListItemAvatar, Avatar, ListItemText, Divider, IconButton, ListItemSecondaryAction, Badge } from '@material-ui/core';
 import { Theme, makeStyles } from '@material-ui/core/styles';
+import DeleteIcon from '@material-ui/icons/Delete';
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import fetchUsersList from './queries/fetchUsersList';
 import { useHistory } from 'react-router-dom';
 
@@ -54,7 +56,7 @@ const UsersList = (props: any) => {
     }
 
     const onDeleteUser = async (id: string) => {
-        await deleteUser({ 
+        await deleteUser({
             variables: { id }
         });
         refetch();
@@ -66,11 +68,27 @@ const UsersList = (props: any) => {
                 <List component="nav">
                     {data.usersList.map((user: IUser) => (
                         <div key={user.id}>
-                            <ListItem button>
+                            <ListItem button onClick={() => { history.push(`/users/${user.id}`) }}>
                                 <ListItemAvatar>
-                                    <Avatar alt="Remy Sharp" src="http://lorempixel.com/50/50" onClick={() => { onDeleteUser(user.id) }} />
+                                    <Avatar alt="Remy Sharp" src="http://lorempixel.com/50/50" />
                                 </ListItemAvatar>
-                                <ListItemText primary={user.name} onClick={()=> {history.push(`/users/${user.id}`)}}/>
+                                <ListItemText primary={user.name} />
+                                <ListItemSecondaryAction>
+                                    <IconButton edge="end" aria-label="like" onClick={() => { }}>
+                                        <Badge
+                                            badgeContent={4}
+                                            color="secondary"
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'left',
+                                            }}>
+                                            <ThumbUpIcon />
+                                        </Badge>
+                                    </IconButton>
+                                    <IconButton edge="end" aria-label="delete" onClick={() => { onDeleteUser(user.id) }}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </ListItemSecondaryAction>
                             </ListItem>
                             <Divider />
                         </div>
