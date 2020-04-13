@@ -16,7 +16,8 @@ interface IQuery {
 
 interface IUser {
     name: string,
-    id: string
+    id: string,
+    likes: Number
 }
 
 
@@ -35,18 +36,26 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const mutation = gql`
+const mutationForDeleteUser = gql`
     mutation DeleteUser($id: String!) {
     deleteUser(id: $id) {
         id,
         name
     }
-}
-`;
+}`;
+
+const mutationForAddLike = gql`
+    mutation AddLikeToUser($id: String!) {
+        addLikeToUser(id: $id) {
+        id,
+        name
+    }
+}`;
 
 const UsersList = (props: any) => {
     const history = useHistory();
-    const [deleteUser, { data: deletedData }] = useMutation(mutation);
+    const [deleteUser] = useMutation(mutationForDeleteUser);
+    const [addLike] = useMutation(mutationForAddLike);
     const { loading, data = { usersList: [] }, refetch } = useQuery<IQuery>(fetchUsersList/*, {
         pollInterval: 500,
     }*/)
@@ -61,7 +70,15 @@ const UsersList = (props: any) => {
         });
         refetch();
     }
-    console.log(data)
+
+    const onAddLike = async (id: string) => {
+        await addLike({
+            variables: { id }
+        });
+        refetch();
+    }
+
+    console.log(data.usersList);
     return (
         <div className={classes.root}>
             <div className={classes.container}>
@@ -74,9 +91,9 @@ const UsersList = (props: any) => {
                                 </ListItemAvatar>
                                 <ListItemText primary={user.name} />
                                 <ListItemSecondaryAction>
-                                    <IconButton edge="end" aria-label="like" onClick={() => { }}>
+                                    <IconButton edge="end" aria-label="like" onClick={() => { onAddLike(user.id) }}>
                                         <Badge
-                                            badgeContent={4}
+                                            badgeContent={user.likes}
                                             color="secondary"
                                             anchorOrigin={{
                                                 vertical: 'bottom',

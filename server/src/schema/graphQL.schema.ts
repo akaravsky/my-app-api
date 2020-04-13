@@ -117,7 +117,7 @@ const RootQuery = new GraphQLObjectType({
                 //console.log('DB', usersFromDB);
                 //console.log('Loc', users.allIds.map((userId: number) => users.byId[userId]));
                 //return users.allIds.map((userId: number) => users.byId[userId]);
-                return usersFromDB.map((user:any) => ({id: user._id, name:user.name}))
+                return usersFromDB.map((user:any) => ({id: user._id, name:user.name, likes:user.likes}))
             }
         },
         likes: {
@@ -141,13 +141,6 @@ const mutation = new GraphQLObjectType({
                 companyId: { type: GraphQLString }
             },
             resolve: async (parentValue: any, { name }: { name: string }) => {
-                //OBJECT
-                /*const id = Math.floor(Math.random() * 1000000)
-                const newUser = { id, firstName, age }
-                users.byId[id] = newUser;
-                users.allIds.push(id);
-                return newUser*/
-
                 //MONGO
                 const newUser = new User({name, likes: 0}); // still not saved in db
                 await newUser.save();
@@ -160,14 +153,6 @@ const mutation = new GraphQLObjectType({
                 id: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: async(parentValue: any, { id }: { id: string }) => {
-                //OBJECT
-                /*delete users.byId[id];
-                const index = users.allIds.indexOf(id);
-                if (index > -1) {
-                    users.allIds.splice(index, 1);
-                }
-                return users.byId[id]*/
-
                 //MONGO
                // User.remove({name:name}) //remove all users with criteria
                // User.findOneAndRemove({name: name})
@@ -181,37 +166,21 @@ const mutation = new GraphQLObjectType({
                 name: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: async(parentValue: any, { id, name }: { id: string, name: string }) => {
-                //OBJECT
-                /*delete users.byId[id];
-                const index = users.allIds.indexOf(id);
-                if (index > -1) {
-                    users.allIds.splice(index, 1);
-                }
-                return users.byId[id]*/
-
                 //MONGO
                // User.update({name: oldName}, {name: newName}) //update all users with criteria
                // User.findOneAndUpdate({name: oldName}, {name: newName})
                await User.findByIdAndUpdate(id, {name});
             }
         },
-        updateUserLikes: {
+        addLikeToUser: {
             type: UserType,
             args: {
                 id: { type: new GraphQLNonNull(GraphQLString) }
             },
             resolve: async(parentValue: any, { id }: { id: string }) => {
-               /*const user = User.findOne({id}) 
-               await User.findByIdAndUpdate(id, {likes});*/
-            }
-        },
-        addLikes: {
-            type: LikesType,
-            args: { id: { type: new GraphQLNonNull(GraphQLInt) } },
-            resolve: async (parentValue: any, args: any) => {
-                await sleep(2000);
-                likes.myLikes = likes.myLikes + 1
-                return likes
+               const user = await User.findOne({_id:id});
+               await user.update({likes: user.likes + 1});
+               return user
             }
         },
         signup: {
