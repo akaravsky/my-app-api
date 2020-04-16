@@ -20,29 +20,29 @@ const useStyles = makeStyles({
 });
 
 const fetchLikes = gql`
-{
-    likes {
-        id
-        myLikes
+    {
+        likes {
+            id
+            myLikes
+        }
     }
-}
 `;
 
 const mutation = gql`
-mutation {
-    addLikes(id: 111){
-        myLikes,
-        id
+    mutation {
+        addLikes(id: 111) {
+            myLikes
+            id
+        }
     }
-}
 `;
 
 const About = () => {
-    const [about, setAbout] = React.useState('')
+    const [about, setAbout] = React.useState('');
     const classes = useStyles();
 
     const { loading, data: initData } = useQuery<any>(fetchLikes);
-    const [like, {data: dataAfterMutation}] = useMutation(mutation);
+    const [like, { data: dataAfterMutation }] = useMutation(mutation);
 
     /*const onClick = () => {
         setAbout('Loading...')
@@ -53,36 +53,46 @@ const About = () => {
     }*/
 
     const onClickAbout = async () => {
-        setAbout('Loading...')
-        const res = await fetch('http://localhost:3000/about/ab')
+        setAbout('Loading...');
+        const res = await fetch('http://localhost:3000/about/ab');
         const json = await res.json();
         setAbout(json.text);
-    }
+    };
 
-    const onClickThumb = (likesBeforeClick:any) => {
+    const onClickThumb = (likesBeforeClick: {myLikes: number}): void => {
         like({
             optimisticResponse: {
                 __typename: 'Mutation',
                 addLikes: {
                     __typename: 'Likes1',
-                    id:111,
+                    id: 111,
                     myLikes: likesBeforeClick?.myLikes + 1 // for imidiate update
                 }
             }
         });
         //refetch()
-    }
-    if(loading){
-        return null
+    };
+    if (loading) {
+        return null;
     }
 
     return (
         <div className={classes.root}>
-            <div className={classes.clickLabel} onClick={onClickAbout}>Click to load 'about'</div>
-            <ThumbUpIcon className={classes.clickLabel} onClick={() => onClickThumb(dataAfterMutation?.likes ?? initData?.likes)} />
+            <div className={classes.clickLabel} onClick={onClickAbout}>
+                Click to load about
+            </div>
+            <ThumbUpIcon
+                className={classes.clickLabel}
+                onClick={(): void =>
+                    onClickThumb(dataAfterMutation?.likes ?? initData?.likes)
+                }
+            />
             <div>{about}</div>
-            <div>{dataAfterMutation?.likes?.myLikes ?? initData?.likes?.myLikes}</div>
-        </div>)
-}
+            <div>
+                {dataAfterMutation?.likes?.myLikes ?? initData?.likes?.myLikes}
+            </div>
+        </div>
+    );
+};
 
 export default About;

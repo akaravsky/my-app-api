@@ -12,30 +12,28 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
             justifyContent: 'center'
-
         },
         container: {
             maxWidth: 360,
             width: '100%',
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: theme.palette.background.paper
         }
-    }),
+    })
 );
 
 const GET_USER = gql`
-  query User($id: String!) {
-    user(id: $id) {
-      name
-      age
+    query User($id: String!) {
+        user(id: $id) {
+            name
+            age
+        }
     }
-  }
 `;
-
 
 const mutation = gql`
     mutation EditUser($name: String!, $id: String!) {
-        updateUser(name: $name, id: $id){
-            name,
+        updateUser(name: $name, id: $id) {
+            name
             id
         }
     }
@@ -47,25 +45,27 @@ const EditUserForm = (props: any) => {
     const history = useHistory();
     const [editUser] = useMutation(mutation);
 
-    const { loading, error, data: { user } = { user: {} } } = useQuery<any>(GET_USER, {
-        variables: { id },
-        fetchPolicy: "no-cache"
-    })
+    const { loading, error, data: { user } = { user: {} } } = useQuery<any>(
+        GET_USER,
+        {
+            variables: { id },
+            fetchPolicy: 'no-cache'
+        }
+    );
 
     const [formName, setFormName] = React.useState<string>('');
 
-    React.useEffect(()=>{
-        props.setTab(1)
-    },[])
+    React.useEffect(() => {
+        props.setTab(1);
+    }, []);
 
     React.useEffect(() => {
-        setFormName(user.name)
-    }, [user.name])
-
+        setFormName(user.name);
+    }, [user.name]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFormName(e.target.value);
-    }
+    };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -73,9 +73,9 @@ const EditUserForm = (props: any) => {
             variables: { name: formName, id: id },
             refetchQueries: [{ query: fetchUsersList }]
         });
-        history.push('/users')
+        history.push('/users');
         props.setTab(1);
-    }
+    };
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{`Error! ${error}`}</div>;
@@ -83,11 +83,14 @@ const EditUserForm = (props: any) => {
     return (
         <div className={classes.root}>
             <form className={classes.container} onSubmit={handleSubmit}>
-                <TextField value={formName} onChange={handleChange} label="Edit user" />
+                <TextField
+                    value={formName}
+                    onChange={handleChange}
+                    label="Edit user"
+                />
             </form>
         </div>
-    )
-
-}
+    );
+};
 
 export default EditUserForm;

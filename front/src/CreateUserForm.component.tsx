@@ -13,19 +13,18 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
             justifyContent: 'center'
-
         },
         container: {
             maxWidth: 360,
             width: '100%',
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: theme.palette.background.paper
         }
-    }),
+    })
 );
 
 const mutation = gql`
     mutation AddUser($name: String!) {
-        addUser(name: $name){
+        addUser(name: $name) {
             name
         }
     }
@@ -39,7 +38,7 @@ const CreateUserForm = (props: any) => {
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value);
-    }
+    };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -47,18 +46,21 @@ const CreateUserForm = (props: any) => {
             variables: { name: value },
             refetchQueries: [{ query: fetchUsersList }]
         });
-        history.push('/users')
+        history.push('/users');
         props.setTab(1);
-    }
+    };
 
     return (
         <div className={classes.root}>
             <form className={classes.container} onSubmit={handleSubmit}>
-                <TextField value={value} onChange={handleChange} label="New user" />
+                <TextField
+                    value={value}
+                    onChange={handleChange}
+                    label="New user"
+                />
             </form>
         </div>
-    )
-
-}
+    );
+};
 
 export default CreateUserForm;

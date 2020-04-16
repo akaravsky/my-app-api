@@ -1,11 +1,11 @@
 import gql from 'graphql-tag';
 
 export const fetchUsersList = gql`
-{
-    usersList{
-        id
-        name,
-        likes
+    {
+        usersList {
+            id
+            name
+            likes
+        }
     }
-}
 `;
