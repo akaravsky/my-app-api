@@ -64,7 +64,6 @@ const UserItem = ({ user }: { user: User }): JSX.Element => {
                         <DeleteIcon />
                     </IconButton>
                 </ListItemSecondaryAction>
-                ,
             </ListItem>
             <Divider />
         </div>
