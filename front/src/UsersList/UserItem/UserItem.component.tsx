@@ -1,5 +1,4 @@
 import React from 'react';
-import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 
 import {
@@ -15,21 +14,19 @@ import {
 import DeleteIcon from '@material-ui/icons/Delete';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 
-import {
-    mutationForDeleteUser,
-    mutationForAddLike
-} from './UserItem.mutations';
-import { IUser } from 'common/common.interfaces';
-import { fetchUsersList } from 'common/common.queries';
+import { User } from 'common/common.interfaces';
+import { useAddLike, useDeleteUser } from './UserItem.hooks';
 
-const UserItem = ({ user }: { user: IUser }) => {
+const UserItem = ({ user }: { user: User }): JSX.Element => {
     const history = useHistory();
+    const onAddLike = useAddLike(user.id, user.likes);
+    const onDeleteUser = useDeleteUser(user.id);
 
     return (
         <div key={user.id}>
             <ListItem
                 button
-                onClick={() => {
+                onClick={(): void => {
                     history.push(`/users/${user.id}`);
                 }}
             >
@@ -44,9 +41,7 @@ const UserItem = ({ user }: { user: IUser }) => {
                     <IconButton
                         edge="end"
                         aria-label="like"
-                        onClick={() => {
-                            onAddLike(user.id, user.likes);
-                        }}
+                        onClick={(): void => onAddLike()}
                     >
                         <Badge
                             badgeContent={user.likes}
@@ -62,8 +57,8 @@ const UserItem = ({ user }: { user: IUser }) => {
                     <IconButton
                         edge="end"
                         aria-label="delete"
-                        onClick={() => {
-                            onDeleteUser(user.id);
+                        onClick={(): void => {
+                            onDeleteUser();
                         }}
                     >
                         <DeleteIcon />
@@ -77,27 +72,3 @@ const UserItem = ({ user }: { user: IUser }) => {
 };
 
 export default UserItem;
-
-async function onAddLike(id: string, likesBeforeClick: number) {
-    const [addLike] = useMutation(mutationForAddLike);
-    await addLike({
-        variables: { id },
-        optimisticResponse: {
-            __typename: 'Mutation',
-            addLikeToUser: {
-                __typename: 'User',
-                id,
-                likes: likesBeforeClick + 1
-            }
-        },
-        refetchQueries: [{ query: fetchUsersList }]
-    });
-}
-
-async function onDeleteUser(id: string) {
-    const [deleteUser] = useMutation(mutationForDeleteUser);
-    await deleteUser({
-        variables: { id },
-        refetchQueries: [{ query: fetchUsersList }]
-    });
-}
