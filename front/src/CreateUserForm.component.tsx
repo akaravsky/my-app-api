@@ -30,17 +30,21 @@ const mutation = gql`
     }
 `;
 
-const CreateUserForm = (props: any) => {
+interface Props {
+    setTab: Function;
+}
+
+const CreateUserForm = (props: Props): JSX.Element => {
     const classes = useStyles();
     const history = useHistory();
-    const [addUser, { data }] = useMutation(mutation);
+    const [addUser] = useMutation(mutation);
     const [value, setValue] = React.useState<string>('');
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setValue(e.target.value);
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         addUser({
             variables: { name: value },

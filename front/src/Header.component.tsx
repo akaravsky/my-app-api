@@ -9,42 +9,45 @@ const Header = ({
 }: {
     tab: number | undefined;
     setTab: Function;
-}) => {
+}): JSX.Element | null => {
     const history = useHistory();
     const location = useLocation();
 
     React.useEffect(() => {
         switch (location.pathname) {
-        case '/':
-            setTab(0);
-            break;
-        case '/users':
-            setTab(1);
-            break;
-        case '/users/new':
-            setTab(2);
-            break;
-        case '/about':
-            setTab(3);
-            break;
+            case '/':
+                setTab(0);
+                break;
+            case '/users':
+                setTab(1);
+                break;
+            case '/users/new':
+                setTab(2);
+                break;
+            case '/about':
+                setTab(3);
+                break;
         }
-    }, []);
+    }, [setTab, location.pathname]);
 
-    const handleChange = (event: React.ChangeEvent<{}>, newTab: number) => {
+    const handleChange = (
+        event: React.ChangeEvent<{}>,
+        newTab: number
+    ): void => {
         setTab(newTab);
         switch (newTab) {
-        case 0:
-            history.push('/');
-            break;
-        case 1:
-            history.push('/users');
-            break;
-        case 2:
-            history.push('/users/new');
-            break;
-        case 3:
-            history.push('/about');
-            break;
+            case 0:
+                history.push('/');
+                break;
+            case 1:
+                history.push('/users');
+                break;
+            case 2:
+                history.push('/users/new');
+                break;
+            case 3:
+                history.push('/about');
+                break;
         }
     };
     if (tab === undefined) {

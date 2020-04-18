@@ -1,11 +1,14 @@
 import { useMutation } from '@apollo/react-hooks';
 import { fetchUsersList } from 'common/common.queries';
-import { mutationForAddLike, mutationForDeleteUser } from './UserItem.mutations';
+import {
+    mutationForAddLike,
+    mutationForDeleteUser
+} from './UserItem.mutations';
 
 export const useAddLike = (id: string, likesBeforeClick: number): Function => {
     const [addLike] = useMutation(mutationForAddLike);
 
-    return ((): void => {
+    return (): void => {
         addLike({
             variables: { id },
             optimisticResponse: {
@@ -18,16 +21,16 @@ export const useAddLike = (id: string, likesBeforeClick: number): Function => {
             },
             refetchQueries: [{ query: fetchUsersList }]
         });
-    });
+    };
 };
 
 export const useDeleteUser = (id: string): Function => {
     const [deleteUser] = useMutation(mutationForDeleteUser);
 
-    return ((): void => {
+    return (): void => {
         deleteUser({
             variables: { id },
             refetchQueries: [{ query: fetchUsersList }]
         });
-    });
+    };
 };

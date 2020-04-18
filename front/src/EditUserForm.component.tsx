@@ -39,42 +39,47 @@ const mutation = gql`
     }
 `;
 
-const EditUserForm = (props: any) => {
+interface Props {
+    setTab: Function;
+}
+
+const EditUserForm = ({ setTab }: Props): JSX.Element => {
     const classes = useStyles();
     const { id } = useParams();
     const history = useHistory();
     const [editUser] = useMutation(mutation);
 
-    const { loading, error, data: { user } = { user: {} } } = useQuery<any>(
-        GET_USER,
-        {
-            variables: { id },
-            fetchPolicy: 'no-cache'
-        }
-    );
+    const {
+        loading,
+        error,
+        data: { user } = { user: { name: '' } }
+    } = useQuery<{ user: { name: string } }>(GET_USER, {
+        variables: { id },
+        fetchPolicy: 'no-cache'
+    });
 
     const [formName, setFormName] = React.useState<string>('');
 
     React.useEffect(() => {
-        props.setTab(1);
-    }, []);
+        setTab(1);
+    }, [setTab]);
 
     React.useEffect(() => {
         setFormName(user.name);
     }, [user.name]);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setFormName(e.target.value);
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         editUser({
             variables: { name: formName, id: id },
             refetchQueries: [{ query: fetchUsersList }]
         });
         history.push('/users');
-        props.setTab(1);
+        setTab(1);
     };
 
     if (loading) return <div>Loading...</div>;

@@ -6,7 +6,7 @@ export interface HomeProps extends RouteComponentProps {
     props2: number;
 }
 
-const Home = (props: HomeProps) => {
+const Home = (props: HomeProps): JSX.Element => {
     return (
         <div>
             {props.props1}

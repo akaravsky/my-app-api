@@ -37,11 +37,13 @@ const mutation = gql`
     }
 `;
 
-const About = () => {
+const About = (): JSX.Element | null => {
     const [about, setAbout] = React.useState('');
     const classes = useStyles();
 
-    const { loading, data: initData } = useQuery<any>(fetchLikes);
+    const { loading, data: initData } = useQuery<{
+        likes: { myLikes: number };
+    }>(fetchLikes);
     const [like, { data: dataAfterMutation }] = useMutation(mutation);
 
     /*const onClick = () => {
@@ -52,14 +54,14 @@ const About = () => {
         })
     }*/
 
-    const onClickAbout = async () => {
+    const onClickAbout = async (): Promise<void> => {
         setAbout('Loading...');
         const res = await fetch('http://localhost:3000/about/ab');
         const json = await res.json();
         setAbout(json.text);
     };
 
-    const onClickThumb = (likesBeforeClick: {myLikes: number}): void => {
+    const onClickThumb = (likesBeforeClick: { myLikes: number }): void => {
         like({
             optimisticResponse: {
                 __typename: 'Mutation',
