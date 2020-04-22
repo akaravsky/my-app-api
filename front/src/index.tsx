@@ -13,8 +13,8 @@ const Home = lazy(() => import('./Home'));
 //const Users = lazy(() => import('./Users.jsx'));
 const About = lazy(() => import('./About'));
 
-import UsersList from './UsersList/UsersList.component';
-import CreateUserForm from './CreateUserForm.component';
+import UsersList from 'UsersList/UsersList.component';
+import CreateUserForm from 'CreateUserForm/CreateUserForm.component';
 import EditUserForm from 'EditUserForm.component';
 
 const cache = new InMemoryCache({
