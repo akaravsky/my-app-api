@@ -37,27 +37,30 @@ interface Props {
 const CreateUserForm = (props: Props): JSX.Element => {
     const classes = useStyles();
     const history = useHistory();
-    const [addUser] = useMutation(mutation);
+    const [addUser, { error }] = useMutation(mutation);
     const [value, setValue] = React.useState<string>('');
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
         setValue(e.target.value);
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    const handleSubmit = async (
+        e: FormEvent<HTMLFormElement>
+    ): Promise<void> => {
         e.preventDefault();
-        addUser({
+        await addUser({
             variables: { name: value },
             refetchQueries: [{ query: fetchUsersList }]
         });
         history.push('/users');
         props.setTab(1);
     };
-
     return (
         <div className={classes.root}>
             <form className={classes.container} onSubmit={handleSubmit}>
                 <TextField
+                    error={Boolean(error)}
+                    helperText={error?.message}
                     value={value}
                     onChange={handleChange}
                     label="New user"
