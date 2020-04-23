@@ -2,50 +2,26 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import { List, CircularProgress } from '@material-ui/core';
-import { Theme, makeStyles } from '@material-ui/core/styles';
 import UserItem from './UserItem/UserItem.component';
 import { User } from 'common/common.interfaces';
 import { fetchUsersList } from 'common/common.queries';
-
-interface Query {
-    usersList: Array<User>;
-}
-
-const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-        display: 'flex',
-        justifyContent: 'center'
-    },
-    container: {
-        maxWidth: 360,
-        width: '100%',
-        backgroundColor: theme.palette.background.paper
-    }
-}));
+import { UsersListQuery } from './UsersList.interfaces';
 
 const UsersList = (): JSX.Element => {
-    const { loading, data = { usersList: [] } } = useQuery<Query>(
+    const { loading, data = { usersList: [] } } = useQuery<UsersListQuery>(
         fetchUsersList
     );
-    const classes = useStyles();
+
     if (loading) {
-        return (
-            <div className={classes.root}>
-                <CircularProgress />
-            </div>
-        );
+        return <CircularProgress />;
     }
 
     return (
-        <div className={classes.root}>
-            <div className={classes.container}>
-                <List component="nav">
-                    {data.usersList.map((user: User) => (
-                        <UserItem user={user} key={user.id} />
-                    ))}
-                </List>
-            </div>
-        </div>
+        <List component="nav">
+            {data.usersList.map((user: User) => (
+                <UserItem user={user} key={user.id} />
+            ))}
+        </List>
     );
 };
 
