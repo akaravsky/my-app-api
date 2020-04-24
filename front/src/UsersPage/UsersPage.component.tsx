@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 import UsersList from 'UsersList/UsersList.component';
 import FabAdd from 'common/components/FabAdd.component';
 
-import { useStylesForUsersPage } from './UsersPage.styles';
+import useStylesForUsersPage from './UsersPage.styles';
 
 const UsersPage = (): JSX.Element => {
     const classes = useStylesForUsersPage();

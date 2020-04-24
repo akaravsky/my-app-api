@@ -1,11 +1,16 @@
 import { useMutation } from '@apollo/react-hooks';
+import { useHistory } from 'react-router';
+
 import { fetchUsersList } from 'common/common.queries';
 import {
     mutationForAddLike,
     mutationForDeleteUser
-} from './UserItem.mutations';
+} from '../UserItem.mutations';
 
-export const useAddLike = (id: string, likesBeforeClick: number): Function => {
+export const useAddLike = (
+    id: string,
+    likesBeforeClick: number
+): (() => void) => {
     const [addLike] = useMutation(mutationForAddLike);
 
     return (): void => {
@@ -24,7 +29,7 @@ export const useAddLike = (id: string, likesBeforeClick: number): Function => {
     };
 };
 
-export const useDeleteUser = (id: string): Function => {
+export const useDeleteUser = (id: string): (() => void) => {
     const [deleteUser] = useMutation(mutationForDeleteUser);
 
     return (): void => {
@@ -32,5 +37,21 @@ export const useDeleteUser = (id: string): Function => {
             variables: { id },
             refetchQueries: [{ query: fetchUsersList }]
         });
+    };
+};
+
+export const useEditUser = (id: string): (() => void) => {
+    const history = useHistory();
+
+    return (): void => {
+        history.push(`/users/${id}`);
+    };
+};
+
+export const useUserPosts = (id: string): (() => void) => {
+    const history = useHistory();
+
+    return (): void => {
+        //history.push(`/users/${id}`);
     };
 };

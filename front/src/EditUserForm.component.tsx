@@ -32,7 +32,7 @@ const GET_USER = gql`
 
 const mutation = gql`
     mutation EditUser($name: String!, $id: String!) {
-        updateUser(name: $name, id: $id) {
+        updateUserName(name: $name, id: $id) {
             name
             id
         }
