@@ -47,11 +47,3 @@ export const useEditUser = (id: string): (() => void) => {
         history.push(`/users/${id}`);
     };
 };
-
-export const useUserPosts = (id: string): (() => void) => {
-    const history = useHistory();
-
-    return (): void => {
-        //history.push(`/users/${id}`);
-    };
-};

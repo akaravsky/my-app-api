@@ -21,7 +21,7 @@ const LeftSideActions = ({ user }: { user: User }): JSX.Element => {
     return (
         <ListItemSecondaryAction>
             <ThumbUpBadgeButton onClick={onAddLike} badgeContent={user.likes} />
-            <UserPostsButton onClick={()=>{}} />
+            <UserPostsButton onClick={(): void => undefined} />
             <EditButton onClick={onEditUser} />
             <DeleteButton onClick={onDeleteUser} />
         </ListItemSecondaryAction>
