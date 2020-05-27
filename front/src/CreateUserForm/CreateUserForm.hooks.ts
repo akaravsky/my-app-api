@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { History, LocationState } from 'history';
 
 import { mutationForAddUser } from './CreateUserForm.mutations';
-import { fetchUsersList } from 'common/common.queries';
+import { fetchUsersList } from 'common/queries/fetchUsersList.query';
 
 export const useHandleSubmit = (
     value: string,

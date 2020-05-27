@@ -16,6 +16,7 @@ const About = lazy(() => import('./About'));
 import CreateUserForm from 'CreateUserForm/CreateUserForm.component';
 import EditUserForm from 'EditUserForm.component';
 import UsersPage from 'UsersPage/UsersPage.component';
+import Companies from 'Companies/Companies.component';
 
 const cache = new InMemoryCache({
     dataIdFromObject: (o): string | undefined => o.id //we can add some identifier that helps apollo know which component should be updated after changing
@@ -49,6 +50,9 @@ const App = (): JSX.Element => {
                         </Route>
                         <Route path="/users">
                             <UsersPage />
+                        </Route>
+                        <Route path="/companies">
+                            <Companies />
                         </Route>
                         <Route path="/about">
                             <About />

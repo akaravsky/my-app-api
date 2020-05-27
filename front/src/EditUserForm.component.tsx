@@ -6,7 +6,7 @@ import { useMutation, useQuery } from '@apollo/react-hooks';
 import { TextField } from '@material-ui/core';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { useHistory, useParams } from 'react-router-dom';
-import { fetchUsersList } from 'common/common.queries';
+import { fetchUsersList } from 'common/queries/fetchUsersList.query';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
