@@ -11,8 +11,9 @@ export default {
     byId: {
       1: { id: 1, name: "Apple", description: "iphone" },
       2: { id: 2, name: "Google", description: "search" },
+      3: { id: 2, name: "Encode", description: "marketing" },
     },
-    allIds: [1, 2],
+    allIds: [1, 2, 3],
   },
   likes: { myLikes: 0, id: 111 },
 };

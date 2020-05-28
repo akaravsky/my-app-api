@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
+import PostSchema from "./post.schema";
+import CompanySchema from "./company.schema";
+
 const Schema = mongoose.Schema;
-const PostSchema = require("./post.schema");
 
 const UserSchema = new Schema({
   name: {
@@ -12,7 +14,8 @@ const UserSchema = new Schema({
     required: [true, "Name isrequired"],
   },
   likes: Number,
-  posts: [PostSchema],
+  posts: [PostSchema.schema],
+  company: [CompanySchema.schema],
 });
 
 export default mongoose.model("user", UserSchema);

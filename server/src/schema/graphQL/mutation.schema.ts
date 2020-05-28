@@ -8,9 +8,20 @@ import {
   GraphQLInt,
 } from "graphql";
 
+import removeUserFromDB from "./mutationMethods/removeUserFromDB";
+import CompanyType from "./company.schema";
+import addCompanyToDB from "./mutationMethods/addCompanyToDB";
+
 const mutation = new GraphQLObjectType({
   name: "Mutation",
   fields: {
+    addCompany: {
+      type: CompanyType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: addCompanyToDB,
+    },
     addUser: {
       type: UserType, //type that we return in resolve function
       args: {
@@ -69,12 +80,5 @@ const mutation = new GraphQLObjectType({
     },
   },
 });
-
-async function removeUserFromDB(parentValue: any, args: any): Promise<void> {
-  //MONGO
-  // User.remove({name:name}) //remove all users with criteria
-  // User.findOneAndRemove({name: name})
-  await User.findByIdAndRemove(args.id, { useFindAndModify: false });
-}
 
 export default mutation;

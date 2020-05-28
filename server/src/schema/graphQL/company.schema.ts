@@ -2,7 +2,7 @@ import { User, UserStatic, Company } from "./graphql.interfaces";
 import UserType from "./user.schema";
 
 const graphql = require("graphql");
-const { users } = require("../db");
+const { users } = require("../../db");
 
 const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } = graphql;
 
@@ -12,7 +12,7 @@ const CompanyType = new GraphQLObjectType({
     id: { type: GraphQLInt },
     name: { type: GraphQLString },
     description: { type: GraphQLString },
-    users: {
+    /*users: {
       type: new GraphQLList(UserType),
       resolve(parentValue: Company, args: any) {
         return users.allIds.reduce(
@@ -26,7 +26,7 @@ const CompanyType = new GraphQLObjectType({
           []
         );
       },
-    },
+    },*/
   }),
 });
 
