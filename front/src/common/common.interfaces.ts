@@ -3,3 +3,8 @@ export interface User {
     id: string;
     likes: number;
 }
+
+export interface Company {
+    name: string;
+    id: string;
+}

@@ -1,11 +1,10 @@
 import gql from 'graphql-tag';
 
 export default gql`
-    {
-        usersList {
+    mutation DeleteCompany($id: String!) {
+        deleteCompany(id: $id) {
             id
             name
-            likes
         }
     }
 `;

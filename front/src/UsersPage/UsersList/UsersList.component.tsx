@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { List, CircularProgress } from '@material-ui/core';
 import UserItem from './UserItem/UserItem.component';
 import { User } from 'common/common.interfaces';
-import { fetchUsersList } from 'common/queries/fetchUsersList.query';
+import fetchUsersList from 'common/queries/fetchUsersList.query';
 import { UsersListQuery } from './UsersList.interfaces';
 
 const UsersList = (): JSX.Element => {

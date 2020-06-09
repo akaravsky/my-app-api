@@ -25,7 +25,7 @@ const RootQuery = new GraphQLObjectType({
     },
     company: {
       type: CompanyType,
-      args: { id: { type: GraphQLInt } },
+      args: { id: { type: GraphQLString } },
       resolve: fetchCompany,
     },
     companies: {

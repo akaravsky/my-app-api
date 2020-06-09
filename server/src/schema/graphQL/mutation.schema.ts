@@ -11,6 +11,7 @@ import {
 import removeUserFromDB from "./mutationMethods/removeUserFromDB";
 import CompanyType from "./company.schema";
 import addCompanyToDB from "./mutationMethods/addCompanyToDB";
+import removeCompany from "./mutationMethods/removeCompany";
 
 const mutation = new GraphQLObjectType({
   name: "Mutation",
@@ -21,6 +22,13 @@ const mutation = new GraphQLObjectType({
         name: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: addCompanyToDB,
+    },
+    deleteCompany: {
+      type: CompanyType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: removeCompany,
     },
     addUser: {
       type: UserType, //type that we return in resolve function

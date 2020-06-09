@@ -16,9 +16,7 @@ const UserItem = ({ user }: { user: User }): JSX.Element => {
         <div key={user.id}>
             <ListItem>
                 <ListItemAvatar>
-                    <Avatar
-                        src="http://lorempixel.com/50/50"
-                    />
+                    <Avatar src="http://lorempixel.com/50/50" />
                 </ListItemAvatar>
                 <ListItemText primary={user.name} />
                 <LeftSideActions user={user} />

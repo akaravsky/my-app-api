@@ -9,7 +9,7 @@ const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } = graphql;
 const CompanyType = new GraphQLObjectType({
   name: "Company",
   fields: () => ({
-    id: { type: GraphQLInt },
+    id: { type: GraphQLString },
     name: { type: GraphQLString },
     description: { type: GraphQLString },
     /*users: {

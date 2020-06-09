@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router';
 
-import { fetchUsersList } from 'common/queries/fetchUsersList.query';
+import fetchUsersList from 'common/queries/fetchUsersList.query';
 import {
     mutationForAddLike,
     mutationForDeleteUser
