@@ -12,6 +12,7 @@ import removeUserFromDB from "./mutationMethods/removeUserFromDB";
 import CompanyType from "./company.schema";
 import addCompanyToDB from "./mutationMethods/addCompanyToDB";
 import removeCompany from "./mutationMethods/removeCompany";
+import fetchCompany from "./fetchMethods/fetchCompany";
 
 const mutation = new GraphQLObjectType({
   name: "Mutation",
@@ -37,9 +38,13 @@ const mutation = new GraphQLObjectType({
         age: { type: GraphQLInt },
         companyId: { type: GraphQLString },
       },
-      resolve: async (parentValue: any, { name }: { name: string }) => {
+      resolve: async (
+        parentValue: any,
+        { name, companyId }: { name: string; companyId: string }
+      ) => {
         //MONGO
-        const newUser = new User({ name, likes: 0 }); // still not saved in db
+        const company = await fetchCompany(null, { id: companyId });
+        const newUser = new User({ name, company, likes: 0 }); // still not saved in db
         await newUser.save();
         return newUser;
       },
@@ -51,20 +56,23 @@ const mutation = new GraphQLObjectType({
       },
       resolve: removeUserFromDB,
     },
-    updateUserName: {
+    updateUser: {
       type: UserType,
       args: {
         id: { type: new GraphQLNonNull(GraphQLString) },
         name: { type: new GraphQLNonNull(GraphQLString) },
+        companyId: { type: GraphQLString },
       },
       resolve: async (
         parentValue: any,
-        { id, name }: { id: string; name: string }
+        { id, name, companyId }: { id: string; name: string; companyId: string }
       ) => {
         //MONGO
         // User.update({name: oldName}, {name: newName}) //update all users with criteria
         // User.findOneAndUpdate({name: oldName}, {name: newName})
-        await User.findByIdAndUpdate(id, { name });
+        const company = await fetchCompany(null, { id: companyId });
+        await User.findByIdAndUpdate(id, { name, company });
+        return User.findById(id);
       },
     },
     addLikeToUser: {

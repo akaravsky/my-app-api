@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import { History, LocationState } from 'history';
 
-import { mutationForAddUser } from './CreateUserForm.mutations';
+import { mutationForAddUser } from './UserForm.mutations';
 import fetchUsersList from 'common/queries/fetchUsersList.query';
 
 export const useHandleSubmit = (

@@ -15,7 +15,7 @@ const UserSchema = new Schema({
   },
   likes: Number,
   posts: [PostSchema.schema],
-  company: [CompanySchema.schema],
+  company: CompanySchema.schema,
 });
 
 export default mongoose.model("user", UserSchema);

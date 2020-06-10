@@ -31,10 +31,11 @@ const GET_USER = gql`
 `;
 
 const mutation = gql`
-    mutation EditUser($name: String!, $id: String!) {
-        updateUserName(name: $name, id: $id) {
+    mutation EditUser($name: String!, $id: String!, $companyId: String) {
+        updateUser(name: $name, id: $id, companyId: $companyId) {
             name
             id
+            companyId
         }
     }
 `;

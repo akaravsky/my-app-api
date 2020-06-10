@@ -49,7 +49,6 @@ const About = (): JSX.Element | null => {
     /*const onClick = () => {
         setAbout('Loading...')
         fetch('http://localhost:3000/about/ab').then(res => res.json()).then(res => {
-            console.log(res);
             setAbout(res.text);
         })
     }*/

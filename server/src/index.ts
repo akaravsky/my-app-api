@@ -13,6 +13,7 @@ import schema from "./schema/graphQL/root.schema";
 mongoose.connect("mongodb://localhost/users_test", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 mongoose.connection
   .once("open", () => console.log("MONGO GO!"))

@@ -6,5 +6,6 @@ export default async function fetchUsers(parentValue: any, args: any) {
     id: user._id,
     name: user.name,
     likes: user.likes,
+    company: user.company,
   }));
 }

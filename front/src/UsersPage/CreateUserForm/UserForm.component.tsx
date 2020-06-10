@@ -2,9 +2,9 @@ import React, { ChangeEvent } from 'react';
 
 import { TextField } from '@material-ui/core';
 
-import { useStyles } from './CreateUserForm.styles';
-import { CreateUserFormProps } from './CreateUserForm.interfaces';
-import { useHandleSubmit } from './CreateUserForm.hooks';
+import { useStyles } from './UserForm.styles';
+import { CreateUserFormProps } from './UserForm.interfaces';
+import { useHandleSubmit } from './UserForm.hooks';
 
 const CreateUserForm = (props: CreateUserFormProps): JSX.Element => {
     const classes = useStyles();
