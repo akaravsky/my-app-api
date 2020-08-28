@@ -13,8 +13,8 @@ const Home = lazy(() => import('./Home'));
 //const Users = lazy(() => import('./Users.jsx'));
 const About = lazy(() => import('./About'));
 
-import CreateUserForm from 'UsersPage/CreateUserForm/UserForm.component';
-import EditUserForm from 'UsersPage/EditUserForm.component';
+import CreateUserForm from 'UsersPage/CreateUserForm/CreateUserForm.component';
+import EditUserForm from 'UsersPage/EditUserForm/EditUserForm.component';
 import UsersPage from 'UsersPage/UsersPage.component';
 import Companies from 'CompaniesPage/CompaniesPage.component';
 import CreateCompanyForm from 'CompaniesPage/CompaniesList/CreateCompanyForm/CreateCompanyForm.component';

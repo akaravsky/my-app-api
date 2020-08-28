@@ -3,10 +3,10 @@ import { useHistory } from 'react-router-dom';
 import { useMutation } from '@apollo/react-hooks';
 import { History, LocationState } from 'history';
 
-import { mutationForAddUser } from './UserForm.mutations';
+import mutationForAddUser from '../../../common/mutations/addUser';
 import fetchUsersList from 'common/queries/fetchUsersList.query';
 
-export const useHandleSubmit = (
+const useHandleSubmit = (
     value: string,
     setTab: Function
 ): [(event: FormEvent<HTMLFormElement>) => void, string | undefined] => {
@@ -33,3 +33,5 @@ async function handleSubmit(
     history.push('/users');
     setTab(1);
 }
+
+export default useHandleSubmit;

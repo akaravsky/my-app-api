@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const mutationForAddUser = gql`
+export default gql`
     mutation AddUser($name: String!) {
         addUser(name: $name) {
             name

@@ -11,5 +11,5 @@ async function fetchUserFromDB(id: string) {
 }
 
 function mapUserForFront(user: IUser) {
-  return { name: user.name, id: user._id };
+  return { name: user.name, id: user._id, company: user.company, posts: user.posts };
 }
