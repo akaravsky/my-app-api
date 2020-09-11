@@ -19,21 +19,23 @@ const mutation = gql`
 `;
 
 const useHandleSubmit = (
-    value: string,
+    userName: string,
+    companyId: string,
     setTab: Function
 ): [(event: FormEvent<HTMLFormElement>) => void, string | undefined] => {
     const history = useHistory();
     const { id } = useParams();
     const [editUser, { error }] = useMutation(mutation);
     return [
-        handleSubmit.bind(null, editUser, value, id, history, setTab),
+        handleSubmit.bind(null, editUser, userName, companyId, id, history, setTab),
         error?.message
     ];
 };
 
 async function handleSubmit(
     editUser: Function,
-    value: string,
+    userName: string,
+    companyId: string,
     id: string,
     history: History<LocationState>,
     setTab: Function,
@@ -41,7 +43,7 @@ async function handleSubmit(
 ): Promise<void> {
     e.preventDefault();
     await editUser({
-        variables: { name: value, id: id },
+        variables: { name: userName, companyId, id: id },
         refetchQueries: [{ query: fetchUsersListQuery }]
     });
     history.push('/users');

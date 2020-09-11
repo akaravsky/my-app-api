@@ -6,6 +6,7 @@ export default gql`
             name
             company {
                 name
+                id
             }
         }
     }

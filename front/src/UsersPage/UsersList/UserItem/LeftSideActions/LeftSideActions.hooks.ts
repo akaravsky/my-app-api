@@ -8,10 +8,12 @@ import {
 } from '../UserItem.mutations';
 
 export const useAddLike = (
-    id: string,
-    likesBeforeClick: number
+    id?: string,
+    likesBeforeClick?: number
 ): (() => void) => {
     const [addLike] = useMutation(mutationForAddLike);
+
+    if(!id) return () => {}
 
     return (): void => {
         addLike({
@@ -21,7 +23,7 @@ export const useAddLike = (
                 addLikeToUser: {
                     __typename: 'User',
                     id,
-                    likes: likesBeforeClick + 1
+                    likes: likesBeforeClick ? likesBeforeClick + 1 : 1
                 }
             },
             refetchQueries: [{ query: fetchUsersList }]
@@ -29,7 +31,7 @@ export const useAddLike = (
     };
 };
 
-export const useDeleteUser = (id: string): (() => void) => {
+export const useDeleteUser = (id?: string): (() => void) => {
     const [deleteUser] = useMutation(mutationForDeleteUser);
 
     return (): void => {
@@ -40,7 +42,7 @@ export const useDeleteUser = (id: string): (() => void) => {
     };
 };
 
-export const useEditUser = (id: string): (() => void) => {
+export const useEditUser = (id?: string): (() => void) => {
     const history = useHistory();
 
     return (): void => {

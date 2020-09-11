@@ -8,7 +8,7 @@ const ThumbUpBadgeButton = ({
     badgeContent
 }: {
     onClick: () => void;
-    badgeContent: string | number;
+    badgeContent?: string | number;
 }): JSX.Element => {
     return (
         <IconButton edge="end" aria-label="like" onClick={onClick}>

@@ -3,6 +3,7 @@ export interface User {
     id?: string;
     likes?: number;
     company?: {
+        id?: string;
         name?: string;
     };
 }

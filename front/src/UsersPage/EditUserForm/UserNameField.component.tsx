@@ -11,5 +11,5 @@ export default function UserNameField({ setUserName, userName, error }: { setUse
         value={userName}
         onChange={handleUserNameChange}
         label="Edit user"
-    />
+    />)
 }

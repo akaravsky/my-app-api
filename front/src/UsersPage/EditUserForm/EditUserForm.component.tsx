@@ -1,12 +1,10 @@
-import React, { ChangeEvent } from 'react';
-import { TextField, Select, MenuItem } from '@material-ui/core';
+import React from 'react';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import { useParams } from 'react-router-dom';
 import useHandleSubmit from './hooks/useHandleSubmit';
-import fetchUserQuery from 'common/queries/fetchUser.query';
 import UserNameField from './UserNameField.component';
 import UserCompanyField from './UserCompanyField.component';
 import useFetchUser from './hooks/useFetchUser';
+import useFetchCompanies from './hooks/useFetchCompanies';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -14,8 +12,10 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'center'
         },
-        container: {
-            maxWidth: 360,
+        form: {
+            display: 'flex',
+            flexDirection: 'column',
+            maxWidth: 250,
             width: '100%',
             backgroundColor: theme.palette.background.paper
         }
@@ -26,20 +26,14 @@ interface Props {
     setTab: Function;
 }
 
-interface User {
-    name: string;
-    company: {
-        name: string;
-    };
-}
-
 const EditUserForm = ({ setTab }: Props): JSX.Element => {
     const classes = useStyles();
     const [userName, setUserName] = React.useState<string>('');
-    const [companyName, setCompanyName] = React.useState<string>('');
-    const [handleSubmit, submitError] = useHandleSubmit(userName, setTab);
-    const { user, loading, error } = useFetchUser();
-    const initCompanyName = user?.company?.name;
+    const [companyId, setCompanyId] = React.useState<string>('');
+    const [handleSubmit, submitError] = useHandleSubmit(userName, companyId, setTab);
+    const { user, loading: userLoading, error: userError } = useFetchUser();
+    const { companies, loading: companiesLoading, error: companiesError } = useFetchCompanies();
+    const initCompanyId = user?.company?.id;
     
 
     React.useEffect(() => {
@@ -48,19 +42,21 @@ const EditUserForm = ({ setTab }: Props): JSX.Element => {
     }, [user.name]);
 
     React.useEffect(() => {
-        if(initCompanyName) {
-            setCompanyName(initCompanyName);
+        if(initCompanyId) {
+            setCompanyId(initCompanyId);
         }
-    }, [initCompanyName]);
+    }, [initCompanyId]);
 
-    if (loading) return <div>Loading...</div>;
-    if (error || submitError) return <div>{`Error! ${error || submitError}`}</div>;
+    if (userLoading) return <div>Loading...</div>;
+    if (userError || submitError) return <div>{`Error! ${userError || submitError}`}</div>;
+
+    console.log('user', user)
 
     return (
         <div className={classes.root}>
-            <form className={classes.container} onSubmit={handleSubmit}>
-                <UserNameField setUserName={setUserName} userName={userName} error={error}/>
-                <UserCompanyField setCompanyName={setCompanyName} companyName={companyName}/>
+            <form className={classes.form} onSubmit={handleSubmit}>
+                <UserNameField setUserName={setUserName} userName={userName} error={userError}/>
+                <UserCompanyField companies={companies} setCompanyId={setCompanyId} companyId={companyId}/>
             </form>
         </div>
     );
