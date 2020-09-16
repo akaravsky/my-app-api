@@ -32,7 +32,7 @@ const EditUserForm = ({ setTab }: Props): JSX.Element => {
     const [companyId, setCompanyId] = React.useState<string>('');
     const [handleSubmit, submitError] = useHandleSubmit(userName, companyId, setTab);
     const { user, loading: userLoading, error: userError } = useFetchUser();
-    const { companies, loading: companiesLoading, error: companiesError } = useFetchCompanies();
+    const { companies } = useFetchCompanies();
     const initCompanyId = user?.company?.id;
     
 
@@ -49,8 +49,6 @@ const EditUserForm = ({ setTab }: Props): JSX.Element => {
 
     if (userLoading) return <div>Loading...</div>;
     if (userError || submitError) return <div>{`Error! ${userError || submitError}`}</div>;
-
-    console.log('user', user)
 
     return (
         <div className={classes.root}>
