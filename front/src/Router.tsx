@@ -12,6 +12,7 @@ import EditUserForm from 'UsersPage/EditUserForm/EditUserForm.component';
 import UsersPage from 'UsersPage/UsersPage.component';
 import Companies from 'CompaniesPage/CompaniesPage.component';
 import CreateCompanyForm from 'CompaniesPage/CompaniesList/CreateCompanyForm/CreateCompanyForm.component';
+import Login from 'Login';
 
 const Router = (): JSX.Element => {
     const [tab, setTab] = React.useState();
@@ -39,6 +40,9 @@ const Router = (): JSX.Element => {
                     </Route>
                     <Route path="/about">
                         <About />
+                    </Route>
+                    <Route path="/login">
+                        <Login />
                     </Route>
                     <Route path="/">
                         <Home props1={'MyHome'} props2={1} />
