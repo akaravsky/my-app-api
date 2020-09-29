@@ -5,23 +5,23 @@ import {
   GraphQLSchema,
 } from "graphql";
 import CompanyType from "./company.schema";
-import UserType from "./user.schema";
+import EmployeeType from "./employee.schema";
 import mutation from "./mutation.schema";
-import UsersListType from "./usersList.schema";
+import EmployeesListType from "./employeesList.schema";
 import CompaniesType from "./companies.schema";
 
-import getUser from "./fetchMethods/getUser";
+import getEmployee from "./fetchMethods/getEmployee";
 import fetchCompanies from "./fetchMethods/fetchCompanies";
 import fetchCompany from "./fetchMethods/fetchCompany";
-import fetchUsers from "./fetchMethods/fetchUsers";
+import fetchEmployees from "./fetchMethods/fetchEmployees";
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
-    user: {
-      type: UserType,
+    employee: {
+      type: EmployeeType,
       args: { id: { type: GraphQLString } },
-      resolve: getUser,
+      resolve: getEmployee,
     },
     company: {
       type: CompanyType,
@@ -33,10 +33,10 @@ const RootQuery = new GraphQLObjectType({
       args: {},
       resolve: fetchCompanies,
     },
-    usersList: {
-      type: UsersListType,
+    employeesList: {
+      type: EmployeesListType,
       args: {},
-      resolve: fetchUsers,
+      resolve: fetchEmployees,
     },
   },
 });

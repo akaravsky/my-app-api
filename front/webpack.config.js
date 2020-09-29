@@ -8,7 +8,7 @@ const config = {
     output: {
         filename: '[name].[chunkhash].js', //chunkhash - for caching
         path: path.resolve(__dirname, 'build'),
-        publicPath: '/'//for reloading page bundle not found if url like users/new
+        publicPath: '/'//for reloading page bundle not found if url like employee/new
     },
      // Enable sourcemaps for debugging webpack's output.
      devtool: "source-map",

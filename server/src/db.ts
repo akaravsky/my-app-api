@@ -1,5 +1,5 @@
 export default {
-  users: {
+  employees: {
     byId: {
       23: { id: 23, firstName: "Bill", age: 21, companyId: 1 },
       44: { id: 44, firstName: "Sara", age: 22, companyId: 2 },

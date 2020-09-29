@@ -1,8 +1,8 @@
-import { User, UserStatic, Company } from "./graphql.interfaces";
-import UserType from "./user.schema";
+import { Employee, EmployeeStatic, Company } from "./graphql.interfaces";
+import EmployeeType from "./employee.schema";
 
 const graphql = require("graphql");
-const { users } = require("../../db");
+const { employees } = require("../../db");
 
 const { GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLList } = graphql;
 
@@ -12,14 +12,14 @@ const CompanyType = new GraphQLObjectType({
     id: { type: GraphQLString },
     name: { type: GraphQLString },
     description: { type: GraphQLString },
-    /*users: {
-      type: new GraphQLList(UserType),
+    /*employees: {
+      type: new GraphQLList(EmployeeType),
       resolve(parentValue: Company, args: any) {
-        return users.allIds.reduce(
-          (acc: Array<UserStatic>, userId: keyof typeof users.byId) => {
-            const user = users.byId[userId] as UserStatic;
-            if (user.companyId === parentValue.id) {
-              acc.push(user);
+        return employees.allIds.reduce(
+          (acc: Array<EmployeeStatic>, employeeId: keyof typeof employees.byId) => {
+            const employee = employees.byId[employeeId] as EmployeeStatic;
+            if (employee.companyId === parentValue.id) {
+              acc.push(employee);
             }
             return acc;
           },

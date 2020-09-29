@@ -4,12 +4,12 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Header from './Header.component';
 
 const Home = lazy(() => import('./Home'));
-//const Users = lazy(() => import('./Users.jsx'));
+//const Employees = lazy(() => import('./Employees.jsx'));
 const About = lazy(() => import('./About'));
 
-import CreateUserForm from 'UsersPage/CreateUserForm/CreateUserForm.component';
-import EditUserForm from 'UsersPage/EditUserForm/EditUserForm.component';
-import UsersPage from 'UsersPage/UsersPage.component';
+import CreateEmployeeForm from 'EmployeesPage/CreateEmployeeForm/CreateEmployeeForm.component';
+import EditEmployeeForm from 'EmployeesPage/EditEmployeeForm/EditEmployeeForm.component';
+import EmployeesPage from 'EmployeesPage/EmployeesPage.component';
 import Companies from 'CompaniesPage/CompaniesPage.component';
 import CreateCompanyForm from 'CompaniesPage/CompaniesList/CreateCompanyForm/CreateCompanyForm.component';
 import Login from 'Login';
@@ -23,14 +23,14 @@ const Router = (): JSX.Element => {
             renders the first one that matches the current URL. */}
             <Suspense fallback={<div>Loading...</div>}>
                 <Switch>
-                    <Route path="/users/new">
-                        <CreateUserForm setTab={setTab} />
+                    <Route path="/employees/new">
+                        <CreateEmployeeForm setTab={setTab} />
                     </Route>
-                    <Route path="/users/:id">
-                        <EditUserForm setTab={setTab} />
+                    <Route path="/employees/:id">
+                        <EditEmployeeForm setTab={setTab} />
                     </Route>
-                    <Route path="/users">
-                        <UsersPage />
+                    <Route path="/employees">
+                        <EmployeesPage />
                     </Route>
                     <Route path="/companies/new">
                         <CreateCompanyForm setTab={setTab} />

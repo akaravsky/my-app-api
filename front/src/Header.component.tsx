@@ -18,7 +18,7 @@ const Header = ({
             case '/':
                 setTab(0);
                 break;
-            case '/users':
+            case '/employees':
                 setTab(1);
                 break;
             case '/companies':
@@ -40,7 +40,7 @@ const Header = ({
                 history.push('/');
                 break;
             case 1:
-                history.push('/users');
+                history.push('/employees');
                 break;
             case 2:
                 history.push('/companies');
@@ -58,7 +58,7 @@ const Header = ({
         <AppBar position="static">
             <Tabs value={tab} onChange={handleChange}>
                 <Tab label="Home" />
-                <Tab label="Users" />
+                <Tab label="Employees" />
                 <Tab label="Companies" />
                 <Tab label="About" />
             </Tabs>

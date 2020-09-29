@@ -1,5 +1,5 @@
-import User from "../mongoose/user.schema";
-import UserType from "./user.schema";
+import Employee from "../mongoose/employee.schema";
+import EmployeeType from "./employee.schema";
 
 import {
   GraphQLString,
@@ -8,7 +8,7 @@ import {
   GraphQLInt,
 } from "graphql";
 
-import removeUserFromDB from "./mutationMethods/removeUserFromDB";
+import removeEmployeeFromDB from "./mutationMethods/removeEmployeeFromDB";
 import CompanyType from "./company.schema";
 import addCompanyToDB from "./mutationMethods/addCompanyToDB";
 import removeCompany from "./mutationMethods/removeCompany";
@@ -31,8 +31,8 @@ const mutation = new GraphQLObjectType({
       },
       resolve: removeCompany,
     },
-    addUser: {
-      type: UserType, //type that we return in resolve function
+    addEmployee: {
+      type: EmployeeType, //type that we return in resolve function
       args: {
         name: { type: new GraphQLNonNull(GraphQLString) },
         age: { type: GraphQLInt },
@@ -44,20 +44,20 @@ const mutation = new GraphQLObjectType({
       ) => {
         //MONGO
         const company = await fetchCompany(null, { id: companyId });
-        const newUser = new User({ name, company, likes: 0 }); // still not saved in db
-        await newUser.save();
-        return newUser;
+        const newEmployee = new Employee({ name, company, likes: 0 }); // still not saved in db
+        await newEmployee.save();
+        return newEmployee;
       },
     },
-    deleteUser: {
-      type: UserType,
+    deleteEmployee: {
+      type: EmployeeType,
       args: {
         id: { type: new GraphQLNonNull(GraphQLString) },
       },
-      resolve: removeUserFromDB,
+      resolve: removeEmployeeFromDB,
     },
-    updateUser: {
-      type: UserType,
+    updateEmployee: {
+      type: EmployeeType,
       args: {
         id: { type: new GraphQLNonNull(GraphQLString) },
         name: { type: new GraphQLNonNull(GraphQLString) },
@@ -68,26 +68,26 @@ const mutation = new GraphQLObjectType({
         { id, name, companyId }: { id: string; name: string; companyId: string }
       ) => {
         //MONGO
-        // User.update({name: oldName}, {name: newName}) //update all users with criteria
-        // User.findOneAndUpdate({name: oldName}, {name: newName})
+        // Employee.update({name: oldName}, {name: newName}) //update all employees with criteria
+        // Employee.findOneAndUpdate({name: oldName}, {name: newName})
         const company = await fetchCompany(null, { id: companyId });
-        await User.findByIdAndUpdate(id, { name, company });
-        return User.findById(id);
+        await Employee.findByIdAndUpdate(id, { name, company });
+        return Employee.findById(id);
       },
     },
-    addLikeToUser: {
-      type: UserType,
+    addLikeToEmployee: {
+      type: EmployeeType,
       args: {
         id: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: async (parentValue: any, { id }: { id: string }) => {
-        /*const user = await User.findOne({_id:id});
-                  await user.update({likes: user.likes + 1});*/
-        await User.update({ _id: id }, { $inc: { likes: 1 } });
+        /*const employee = await Employee.findOne({_id:id});
+                  await employee.update({likes: employee.likes + 1});*/
+        await Employee.update({ _id: id }, { $inc: { likes: 1 } });
       },
     },
     signup: {
-      type: UserType,
+      type: EmployeeType,
       args: {
         email: { type: GraphQLString },
         password: { type: GraphQLString },

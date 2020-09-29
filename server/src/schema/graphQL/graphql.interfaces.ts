@@ -1,4 +1,4 @@
-export interface User {
+export interface Employee {
   _id: string;
   name: string;
   likes: number;
@@ -11,13 +11,13 @@ export interface CompanyInDB {
   name: string;
 }
 
-export interface UserStatic {
+export interface EmployeeStatic {
   id: string;
   name: string;
   age: number;
   companyId?: string;
 }
-
+ 
 export interface Company {
   id: string;
   name: string;

@@ -8,7 +8,7 @@ const expressGraphQL = require("express-graphql");
 
 import schema from "./schema/graphQL/root.schema";
 
-mongoose.connect("mongodb://localhost/users_test", {
+mongoose.connect("mongodb://localhost/employees", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
