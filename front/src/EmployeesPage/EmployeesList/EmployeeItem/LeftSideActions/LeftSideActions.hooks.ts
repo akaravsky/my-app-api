@@ -2,7 +2,6 @@ import { useMutation } from '@apollo/react-hooks';
 import fetchEmployeesListQuery from 'common/queries/fetchEmployeesList.query';
 import { useHistory } from 'react-router';
 
-
 import {
     mutationForAddLike,
     mutationForDeleteEmployee
@@ -14,7 +13,8 @@ export const useAddLike = (
 ): (() => void) => {
     const [addLike] = useMutation(mutationForAddLike);
 
-    if(!id) return () => {}
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    if (!id) return (): void => {};
 
     return (): void => {
         addLike({

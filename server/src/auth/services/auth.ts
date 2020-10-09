@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
+import User from "../mongo/user.shema";
 
-const User = mongoose.model('user');
+const mongoose = require("mongoose");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 
 // SerializeUser is used to provide some identifying token that can be saved
 // in the users session.  We traditionally use the 'ID' for this.
@@ -26,19 +26,30 @@ passport.deserializeUser((id: any, done: any) => {
 // the password might not match the saved one.  In either case, we call the 'done'
 // callback, including a string that messages why the authentication process failed.
 // This string is provided back to the GraphQL client.
-passport.use(new LocalStrategy({ usernameField: 'email' }, (email: any, password: any, done: any) => {
-  User.findOne({ email: email.toLowerCase() }, (err: any, user: any) => {
-    if (err) { return done(err); }
-    if (!user) { return done(null, false, 'Invalid Credentials'); }
-    user.comparePassword(password, (err: any, isMatch: any) => {
-      if (err) { return done(err); }
-      if (isMatch) {
-        return done(null, user);
-      }
-      return done(null, false, 'Invalid credentials.');
-    });
-  });
-}));
+passport.use(
+  new LocalStrategy(
+    { usernameField: "email" },
+    (email: any, password: any, done: any) => {
+      User.findOne({ email: email.toLowerCase() }, (err: any, user: any) => {
+        if (err) {
+          return done(err);
+        }
+        if (!user) {
+          return done(null, false, "Invalid Credentials");
+        }
+        user.comparePassword(password, (err: any, isMatch: any) => {
+          if (err) {
+            return done(err);
+          }
+          if (isMatch) {
+            return done(null, user);
+          }
+          return done(null, false, "Invalid credentials.");
+        });
+      });
+    }
+  )
+);
 
 // Creates a new user account.  We first check to see if a user already exists
 // with this email address to avoid making multiple accounts with identical addresses
@@ -47,19 +58,33 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email: any, password
 // Notice the Promise created in the second 'then' statement.  This is done
 // because Passport only supports callbacks, while GraphQL only supports promises
 // for async code!  Awkward!
-export function signup({ email, password, req }: { email: any, password: any, req: any }) {
+export function signup({
+  email,
+  password,
+  req,
+}: {
+  email: any;
+  password: any;
+  req: any;
+}) {
   const user = new User({ email, password });
-  if (!email || !password) { throw new Error('You must provide an email and password.'); }
+  if (!email || !password) {
+    throw new Error("You must provide an email and password.");
+  }
 
   return User.findOne({ email })
     .then((existingUser: any) => {
-      if (existingUser) { throw new Error('Email in use'); }
+      if (existingUser) {
+        throw new Error("Email in use");
+      }
       return user.save();
     })
     .then((user: any) => {
       return new Promise((resolve, reject) => {
         req.logIn(user, (err: any) => {
-          if (err) { reject(err); }
+          if (err) {
+            reject(err);
+          }
           resolve(user);
         });
       });
@@ -71,10 +96,20 @@ export function signup({ email, password, req }: { email: any, password: any, re
 // function returns a function, as its indended to be used as a middleware with
 // Express.  We have another compatibility layer here to make it work nicely with
 // GraphQL, as GraphQL always expects to see a promise for handling async code.
-export function login({ email, password, req }: { email: any, password: any, req: any }) {
+export function login({
+  email,
+  password,
+  req,
+}: {
+  email: any;
+  password: any;
+  req: any;
+}) {
   return new Promise((resolve, reject) => {
-    passport.authenticate('local', (err: any, user: any) => {
-      if (!user) { reject('Invalid credentials.') }
+    passport.authenticate("local", (err: any, user: any) => {
+      if (!user) {
+        reject("Invalid credentials.");
+      }
 
       req.login(user, () => resolve(user));
     })({ body: { email, password } });

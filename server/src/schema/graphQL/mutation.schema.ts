@@ -13,6 +13,7 @@ import CompanyType from "./company.schema";
 import addCompanyToDB from "./mutationMethods/addCompanyToDB";
 import removeCompany from "./mutationMethods/removeCompany";
 import fetchCompany from "./fetchMethods/fetchCompany";
+import { signup } from "../../auth/schema/user.mutations";
 
 const mutation = new GraphQLObjectType({
   name: "Mutation",
@@ -86,14 +87,7 @@ const mutation = new GraphQLObjectType({
         await Employee.update({ _id: id }, { $inc: { likes: 1 } });
       },
     },
-    signup: {
-      type: EmployeeType,
-      args: {
-        email: { type: GraphQLString },
-        password: { type: GraphQLString },
-      },
-      resolve(parentValue: any, args: any, request: any) {},
-    },
+    signup,
   },
 });
 
