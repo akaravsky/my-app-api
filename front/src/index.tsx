@@ -12,12 +12,14 @@ const cache = new InMemoryCache({
     dataIdFromObject: (o): string | undefined => o.id //we can add some identifier that helps apollo know which component should be updated after changing
 });
 const link = new HttpLink({
-    uri: 'http://localhost:3000/graphql'
+    uri: 'http://localhost:3000/graphql',
+    credentials: 'include'
 });
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
     cache,
-    link
+    link,
+    connectToDevTools: true
 });
 
 const App = (): JSX.Element => {

@@ -1,7 +1,10 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-
 import { AppBar, Tabs, Tab } from '@material-ui/core';
+
+import currentUserQuery from 'common/queries/currentUser.query';
+import { useQuery } from 'react-apollo';
+import { User } from 'common/common.interfaces';
 
 const Header = ({
     tab,
@@ -12,6 +15,10 @@ const Header = ({
 }): JSX.Element | null => {
     const history = useHistory();
     const location = useLocation();
+
+    const { loading, data } = useQuery<User>(currentUserQuery);
+
+    console.log('USER', loading, data);
 
     React.useEffect(() => {
         switch (location.pathname) {
