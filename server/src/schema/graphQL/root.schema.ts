@@ -15,6 +15,8 @@ import fetchCompanies from "./fetchMethods/fetchCompanies";
 import fetchCompany from "./fetchMethods/fetchCompany";
 import fetchEmployees from "./fetchMethods/fetchEmployees";
 
+import { user } from "../../auth/schema/queries";
+
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
   fields: {
@@ -38,6 +40,7 @@ const RootQuery = new GraphQLObjectType({
       args: {},
       resolve: fetchEmployees,
     },
+    user,
   },
 });
 
