@@ -13,7 +13,8 @@ import CompanyType from "./company.schema";
 import addCompanyToDB from "./mutationMethods/addCompanyToDB";
 import removeCompany from "./mutationMethods/removeCompany";
 import fetchCompany from "./fetchMethods/fetchCompany";
-import { signup } from "../../auth/schema/user.mutations";
+import signup from "../../auth/schema/mutations/signup";
+import logout from "../../auth/schema/mutations/logout";
 
 const mutation = new GraphQLObjectType({
   name: "Mutation",
@@ -88,6 +89,7 @@ const mutation = new GraphQLObjectType({
       },
     },
     signup,
+    logout,
   },
 });
 

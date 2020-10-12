@@ -1,8 +1,8 @@
 import { GraphQLString } from "graphql";
-import UserType from "./types/user.type";
-import { signup as signupService } from "../services/auth";
+import UserType from "../types/user.type";
+import { signup as signupService } from "../../services/auth";
 
-export const signup = {
+const signup = {
   type: UserType,
   args: {
     email: { type: GraphQLString },
@@ -16,3 +16,5 @@ export const signup = {
     });
   },
 };
+
+export default signup;
