@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import Header from './Header.component';
+import Header from './Header/Header.component';
 
 const Home = lazy(() => import('./Home'));
 //const Employees = lazy(() => import('./Employees.jsx'));

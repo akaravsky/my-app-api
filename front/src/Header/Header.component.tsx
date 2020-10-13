@@ -1,10 +1,12 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { AppBar, Tabs, Tab } from '@material-ui/core';
+import { AppBar, Tabs, Tab, Toolbar } from '@material-ui/core';
 
 import currentUserQuery from 'common/queries/currentUser.query';
 import { useQuery } from 'react-apollo';
 import { User } from 'common/common.interfaces';
+import useStylesForHeader from './Header.styles';
+import LogoutButton from './LogoutButton.component';
 
 const Header = ({
     tab,
@@ -15,6 +17,7 @@ const Header = ({
 }): JSX.Element | null => {
     const history = useHistory();
     const location = useLocation();
+    const classes = useStylesForHeader();
 
     const { loading, data } = useQuery<User>(currentUserQuery);
 
@@ -57,18 +60,21 @@ const Header = ({
                 break;
         }
     };
-    if (tab === undefined) {
+    if (tab === undefined || location.pathname === '/login') {
         return null;
     }
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" classes={{ root: classes.root }}>
             <Tabs value={tab} onChange={handleChange}>
                 <Tab label="Home" />
                 <Tab label="Employees" />
                 <Tab label="Companies" />
                 <Tab label="About" />
             </Tabs>
+            <Toolbar classes={{ root: classes.toolbar }}>
+                <LogoutButton />
+            </Toolbar>
         </AppBar>
     );
 };
