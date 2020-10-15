@@ -9,7 +9,7 @@ const Header = () => {
     const [logout] = useMutation(logoutMutation);
 
     const handleClick = () => {
-        history.push('/login');
+        history.push('/auth');
         logout();
     };
 

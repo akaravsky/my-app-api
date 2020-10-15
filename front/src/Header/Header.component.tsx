@@ -60,7 +60,7 @@ const Header = ({
                 break;
         }
     };
-    if (tab === undefined || location.pathname === '/login') {
+    if (tab === undefined || location.pathname === '/auth') {
         return null;
     }
 

@@ -12,7 +12,7 @@ import EditEmployeeForm from 'EmployeesPage/EditEmployeeForm/EditEmployeeForm.co
 import EmployeesPage from 'EmployeesPage/EmployeesPage.component';
 import Companies from 'CompaniesPage/CompaniesPage.component';
 import CreateCompanyForm from 'CompaniesPage/CompaniesList/CreateCompanyForm/CreateCompanyForm.component';
-import Login from 'Login';
+import Auth from 'Auth';
 
 const Router = (): JSX.Element => {
     const [tab, setTab] = React.useState();
@@ -41,8 +41,8 @@ const Router = (): JSX.Element => {
                     <Route path="/about">
                         <About />
                     </Route>
-                    <Route path="/login">
-                        <Login />
+                    <Route path="/auth">
+                        <Auth />
                     </Route>
                     <Route path="/">
                         <Home props1={'MyHome'} props2={1} />
