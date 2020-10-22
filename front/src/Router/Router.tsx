@@ -1,11 +1,11 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import Header from './Header/Header.component';
+import Header from '../Header/Header.component';
 
-const Home = lazy(() => import('./Home'));
+const Home = lazy(() => import('../Home'));
 //const Employees = lazy(() => import('./Employees.jsx'));
-const About = lazy(() => import('./About'));
+const About = lazy(() => import('../About'));
 
 import CreateEmployeeForm from 'EmployeesPage/CreateEmployeeForm/CreateEmployeeForm.component';
 import EditEmployeeForm from 'EmployeesPage/EditEmployeeForm/EditEmployeeForm.component';
@@ -13,6 +13,7 @@ import EmployeesPage from 'EmployeesPage/EmployeesPage.component';
 import Companies from 'CompaniesPage/CompaniesPage.component';
 import CreateCompanyForm from 'CompaniesPage/CompaniesList/CreateCompanyForm/CreateCompanyForm.component';
 import Auth from 'AuthPage/AuthPage';
+import PrivateRoute from './PrivateRoute';
 
 const Router = (): JSX.Element => {
     const [tab, setTab] = React.useState();
@@ -23,30 +24,30 @@ const Router = (): JSX.Element => {
             renders the first one that matches the current URL. */}
             <Suspense fallback={<div>Loading...</div>}>
                 <Switch>
-                    <Route path="/employees/new">
+                    <PrivateRoute path="/employees/new">
                         <CreateEmployeeForm setTab={setTab} />
-                    </Route>
-                    <Route path="/employees/:id">
+                    </PrivateRoute>
+                    <PrivateRoute path="/employees/:id">
                         <EditEmployeeForm setTab={setTab} />
-                    </Route>
-                    <Route path="/employees">
+                    </PrivateRoute>
+                    <PrivateRoute path="/employees">
                         <EmployeesPage />
-                    </Route>
-                    <Route path="/companies/new">
+                    </PrivateRoute>
+                    <PrivateRoute path="/companies/new">
                         <CreateCompanyForm setTab={setTab} />
-                    </Route>
-                    <Route path="/companies">
+                    </PrivateRoute>
+                    <PrivateRoute path="/companies">
                         <Companies />
-                    </Route>
-                    <Route path="/about">
+                    </PrivateRoute>
+                    <PrivateRoute path="/about">
                         <About />
-                    </Route>
+                    </PrivateRoute>
                     <Route path="/auth">
                         <Auth />
                     </Route>
-                    <Route path="/">
+                    <PrivateRoute path="/">
                         <Home props1={'MyHome'} props2={1} />
-                    </Route>
+                    </PrivateRoute>
                 </Switch>
             </Suspense>
         </BrowserRouter>

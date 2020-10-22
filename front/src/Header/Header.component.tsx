@@ -19,8 +19,6 @@ const Header = ({
     const location = useLocation();
     const classes = useStylesForHeader();
 
-    const { loading, data } = useQuery<User>(currentUserQuery);
-
     React.useEffect(() => {
         switch (location.pathname) {
             case '/':
