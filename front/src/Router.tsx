@@ -12,7 +12,7 @@ import EditEmployeeForm from 'EmployeesPage/EditEmployeeForm/EditEmployeeForm.co
 import EmployeesPage from 'EmployeesPage/EmployeesPage.component';
 import Companies from 'CompaniesPage/CompaniesPage.component';
 import CreateCompanyForm from 'CompaniesPage/CompaniesList/CreateCompanyForm/CreateCompanyForm.component';
-import Auth from 'Auth';
+import Auth from 'AuthPage/AuthPage';
 
 const Router = (): JSX.Element => {
     const [tab, setTab] = React.useState();

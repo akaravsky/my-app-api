@@ -7,6 +7,7 @@ import { InMemoryCache, NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 
 import Router from './Router';
+import './style.css';
 
 const cache = new InMemoryCache({
     dataIdFromObject: (o): string | undefined => o.id //we can add some identifier that helps apollo know which component should be updated after changing

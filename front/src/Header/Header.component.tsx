@@ -21,8 +21,6 @@ const Header = ({
 
     const { loading, data } = useQuery<User>(currentUserQuery);
 
-    console.log('USER', loading, data);
-
     React.useEffect(() => {
         switch (location.pathname) {
             case '/':
