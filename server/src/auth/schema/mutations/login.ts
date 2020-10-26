@@ -1,6 +1,6 @@
 import { GraphQLString } from "graphql";
 import UserType from "../types/user.type";
-import { login as loginService } from "../../services/auth";
+import { login as loginService } from "../../services/localAuth";
 
 const login = {
   type: UserType,

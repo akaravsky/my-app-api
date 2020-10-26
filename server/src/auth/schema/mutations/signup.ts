@@ -1,6 +1,6 @@
 import { GraphQLString } from "graphql";
 import UserType from "../types/user.type";
-import { signup as signupService } from "../../services/auth";
+import { signup as signupService } from "../../services/localAuth";
 
 const signup = {
   type: UserType,

@@ -7,6 +7,7 @@ const session = require("express-session");
 const passport = require("passport");
 
 import schema from "./schema/graphQL/root.schema";
+import keys from "./auth/config/keys";
 
 mongoose.connect("mongodb://localhost/employees", {
   useNewUrlParser: true,
@@ -46,6 +47,20 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: "/auth/google/callback",
+    },
+    (accessToken: string) => {
+      console.log(accessToken);
+    }
+  )
+);
+
 // Instruct Express to pass on any request made to the '/graphql' route
 // to the GraphQL instance.
 app.use(
@@ -61,5 +76,16 @@ app.get("/", (req: any, res: any) => res.send("Hello World!"));
 app.get("/about/ab", (req: any, res: any) =>
   res.json({ text: "This is about!" })
 );
+
+app.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+app.get("/auth/google/callback", passport.authenticate("google"), function () {
+  // Successful authentication, redirect home.
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
