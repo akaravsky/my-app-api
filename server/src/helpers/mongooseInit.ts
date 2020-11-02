@@ -1,7 +1,9 @@
+import keys from "../auth/config/keys";
+
 const mongoose = require("mongoose");
 
 export const mongooseInit = () => {
-  mongoose.connect("mongodb://localhost/employees", {
+  mongoose.connect(keys.mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

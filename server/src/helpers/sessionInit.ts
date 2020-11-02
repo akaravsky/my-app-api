@@ -1,3 +1,5 @@
+import keys from "../auth/config/keys";
+
 const session = require("express-session");
 
 export const sessionInit = (app: any) => {
@@ -10,7 +12,11 @@ export const sessionInit = (app: any) => {
     session({
       resave: true,
       saveUninitialized: true,
-      secret: "aaabbbccc",
+      secret: keys.sessionSecret,
+      cookie: {
+        secure: false,
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      },
     })
   );
 };

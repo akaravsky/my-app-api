@@ -1,7 +1,6 @@
 const express = require("express");
 
-import { googleAuthInit } from "./auth/services/googleAuthInit";
-import passportInit from "./auth/services/passport";
+import { authInit } from "./auth/services/authInit";
 import {
   mongooseInit,
   corsInit,
@@ -14,8 +13,7 @@ const app = express();
 
 mongooseInit();
 corsInit(app);
-passportInit(app);
 sessionInit(app);
 graphqlInit(app);
 portInit(app);
-googleAuthInit(app);
+authInit(app);

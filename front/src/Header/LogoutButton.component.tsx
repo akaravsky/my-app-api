@@ -9,8 +9,8 @@ const Header = () => {
     const [logout] = useMutation(logoutMutation);
 
     const handleClick = () => {
-        history.push('/auth');
         logout();
+        history.push('/auth');
     };
 
     return <Button onClick={handleClick}>Log out</Button>;

@@ -1,5 +1,19 @@
 const passport = require("passport");
 
+interface Req {
+  session: {
+    passport: {
+      user: {
+        id: string;
+      };
+    };
+  };
+  logout: Function;
+}
+interface Res {
+  send: Function;
+}
+
 export default function googleAuthRoutes(app: any) {
   app.get(
     "/auth/google",
@@ -8,11 +22,20 @@ export default function googleAuthRoutes(app: any) {
     })
   );
 
-  app.get(
-    "/auth/google/callback",
-    passport.authenticate("google"),
-    function () {
-      // Successful authentication, redirect home.
-    }
-  );
+  app.get("/auth/google/callback", passport.authenticate("google"), function (
+    req: any,
+    res: any
+  ) {
+    // Successful authentication, redirect home.
+    res.redirect("/");
+  });
+
+  app.get("api/logout", (req: Req, res: Res) => {
+    req.logout(); //logout bound by passport lib
+    res.send(req.session.passport);
+  });
+
+  app.get("/", (req: Req, res: Res) => {
+    res.send(req.session.passport);
+  });
 }
