@@ -68,7 +68,7 @@ function googleStrategyInit() {
       {
         clientID: keys.googleClientID,
         clientSecret: keys.googleClientSecret,
-        callbackURL: "http://localhost:3000/auth/google/callback",
+        callbackURL: keys.googleCallbackURL
       },
       googleCallback
     )

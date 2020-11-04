@@ -8,6 +8,7 @@ interface Req {
       };
     };
   };
+  user: any
   logout: Function;
 }
 interface Res {
@@ -36,6 +37,6 @@ export default function googleAuthRoutes(app: any) {
   });
 
   app.get("/", (req: Req, res: Res) => {
-    res.send(req.session.passport);
+    res.send(req.user);
   });
 }
