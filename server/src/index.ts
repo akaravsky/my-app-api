@@ -14,6 +14,6 @@ const app = express();
 mongooseInit();
 corsInit(app);
 sessionInit(app);
-graphqlInit(app);
 portInit(app);
 authInit(app);
+graphqlInit(app);

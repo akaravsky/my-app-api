@@ -27,8 +27,8 @@ export default function googleAuthRoutes(app: any) {
     req: any,
     res: any
   ) {
-    // Successful authentication, redirect home.
-    res.redirect("/");
+    console.log('Successful authentication, redirect home.');
+    //res.redirect("/");
   });
 
   app.get("api/logout", (req: Req, res: Res) => {

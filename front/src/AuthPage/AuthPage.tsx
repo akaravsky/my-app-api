@@ -1,7 +1,9 @@
 import { Paper } from '@material-ui/core';
 import React, { ChangeEvent } from 'react';
+
 import useAuthPageStyles from './AuthPage.styles';
 import AuthSwitcher from './AuthSwitcher/AuthSwitcher.component';
+import GoogleAuth from './GoogleAuth';
 import LoginForm from './LoginForm/LoginForm.component';
 import SigninForm from './SignupForm/SignupForm.component';
 
@@ -25,11 +27,18 @@ const AuthPage = (): JSX.Element => {
         }
     };
     return (
-        <div className={classes.container}>
-            <Paper classes={{ root: classes.paper }}>
-                <AuthSwitcher onChange={handleSwitch} />
-                {authType === AUTH_TYPE.LOGIN ? <LoginForm /> : <SigninForm />}
-            </Paper>
+        <div className={classes.root}>
+            <div className={classes.container}>
+                <Paper classes={{ root: classes.paper }}>
+                    <AuthSwitcher onChange={handleSwitch} />
+                    {authType === AUTH_TYPE.LOGIN ? (
+                        <LoginForm />
+                    ) : (
+                        <SigninForm />
+                    )}
+                </Paper>
+                <GoogleAuth />
+            </div>
         </div>
     );
 };

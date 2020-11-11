@@ -1,19 +1,26 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-
+import PrivateRoute from './PrivateRoute';
+import Auth from 'AuthPage/AuthPage';
 import Header from '../Header/Header.component';
 
 const Home = lazy(() => import('../Home'));
-//const Employees = lazy(() => import('./Employees.jsx'));
 const About = lazy(() => import('../About'));
-
-import CreateEmployeeForm from 'EmployeesPage/CreateEmployeeForm/CreateEmployeeForm.component';
-import EditEmployeeForm from 'EmployeesPage/EditEmployeeForm/EditEmployeeForm.component';
-import EmployeesPage from 'EmployeesPage/EmployeesPage.component';
-import Companies from 'CompaniesPage/CompaniesPage.component';
-import CreateCompanyForm from 'CompaniesPage/CompaniesList/CreateCompanyForm/CreateCompanyForm.component';
-import Auth from 'AuthPage/AuthPage';
-import PrivateRoute from './PrivateRoute';
+const CreateEmployeeForm = lazy(() =>
+    import('EmployeesPage/CreateEmployeeForm/CreateEmployeeForm.component')
+);
+const EditEmployeeForm = lazy(() =>
+    import('EmployeesPage/EditEmployeeForm/EditEmployeeForm.component')
+);
+const EmployeesPage = lazy(() =>
+    import('EmployeesPage/EmployeesPage.component')
+);
+const Companies = lazy(() => import('CompaniesPage/CompaniesPage.component'));
+const CreateCompanyForm = lazy(() =>
+    import(
+        'CompaniesPage/CompaniesList/CreateCompanyForm/CreateCompanyForm.component'
+    )
+);
 
 const Router = (): JSX.Element => {
     const [tab, setTab] = React.useState();
@@ -42,10 +49,10 @@ const Router = (): JSX.Element => {
                     <PrivateRoute path="/about">
                         <About />
                     </PrivateRoute>
-                    <Route path="/auth">
+                    <Route exact path="/auth">
                         <Auth />
                     </Route>
-                    <PrivateRoute path="/">
+                    <PrivateRoute exact path="/">
                         <Home props1={'MyHome'} props2={1} />
                     </PrivateRoute>
                 </Switch>

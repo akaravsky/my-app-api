@@ -3,13 +3,16 @@ import { Button } from '@material-ui/core';
 import { useHistory } from 'react-router';
 import { logout as logoutMutation } from './mutations';
 import { useMutation } from 'react-apollo';
+import currentUserQuery from 'common/queries/currentUser.query';
 
-const Header = () => {
+const Header = (): JSX.Element => {
     const history = useHistory();
     const [logout] = useMutation(logoutMutation);
 
-    const handleClick = () => {
-        logout();
+    const handleClick = async (): Promise<void> => {
+        await logout({
+            refetchQueries: [{ query: currentUserQuery }]
+        });
         history.push('/auth');
     };
 

@@ -24,7 +24,7 @@ const AuthSwitcher = (props: {
 }): JSX.Element => {
     const classes = useStyles();
     return (
-        <Typography>
+        <Typography component={'div'}>
             <Grid
                 component="label"
                 container

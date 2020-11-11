@@ -12,14 +12,13 @@ function PrivateRoute({
     children: JSX.Element;
     [name: string]: any;
 }): JSX.Element {
-    const { loading, data } = useQuery<User>(currentUserQuery);
-    console.log('PRIVATE', data, loading);
+    const { loading, data } = useQuery<{ user: User }>(currentUserQuery);
 
     return (
         <Route
             {...restProps}
             render={({ location }): JSX.Element =>
-                data ? (
+                data?.user ? (
                     children
                 ) : (
                     <Redirect

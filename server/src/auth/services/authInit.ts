@@ -13,9 +13,9 @@ interface UserProfile {
 
 export const authInit = (app: any) => {
   passportInit(app);
+  googleAuthRoutes(app);
   localStrategyInit();
   googleStrategyInit();
-  googleAuthRoutes(app);
   serializeUserInit(app);
 };
 
@@ -25,6 +25,7 @@ function passportInit(app: any) {
   // assign the current user to the 'req.user' object.  See also servces/auth.js
   app.use(passport.initialize());
   app.use(passport.session());
+  console.log('PASSPORT INITTIALIZED')
 }
 
 function localStrategyInit() {
