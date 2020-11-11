@@ -12,21 +12,11 @@ interface UserProfile {
 }
 
 export const authInit = (app: any) => {
-  passportInit(app);
   googleAuthRoutes(app);
   localStrategyInit();
   googleStrategyInit();
   serializeUserInit(app);
 };
-
-function passportInit(app: any) {
-  // Passport is wired into express as a middleware. When a request comes in,
-  // Passport will examine the request's session (as set by the above config) and
-  // assign the current user to the 'req.user' object.  See also servces/auth.js
-  app.use(passport.initialize());
-  app.use(passport.session());
-  console.log('PASSPORT INITTIALIZED')
-}
 
 function localStrategyInit() {
   // Instructs Passport how to authenticate a user using a locally saved email
@@ -69,7 +59,8 @@ function googleStrategyInit() {
       {
         clientID: keys.googleClientID,
         clientSecret: keys.googleClientSecret,
-        callbackURL: keys.googleCallbackURL
+        callbackURL: keys.googleCallbackURL,
+        proxy: true,
       },
       googleCallback
     )
@@ -80,7 +71,6 @@ function googleStrategyInit() {
     profile: UserProfile,
     done: any
   ) {
-    console.log("googleCallback", profile);
     const userEmail = profile.emails[0].value;
     const existingUser = await User.findOne({ email: userEmail });
     if (existingUser) {

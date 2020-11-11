@@ -8,11 +8,12 @@ interface Req {
       };
     };
   };
-  user: any
+  user: any;
   logout: Function;
 }
 interface Res {
   send: Function;
+  redirect: Function;
 }
 
 export default function googleAuthRoutes(app: any) {
@@ -24,11 +25,11 @@ export default function googleAuthRoutes(app: any) {
   );
 
   app.get("/auth/google/callback", passport.authenticate("google"), function (
-    req: any,
-    res: any
+    req: Req,
+    res: Res
   ) {
-    console.log('Successful authentication, redirect home.');
-    //res.redirect("/");
+    console.log("/auth/google/callback");
+    res.redirect("/");
   });
 
   app.get("api/logout", (req: Req, res: Res) => {
