@@ -21,4 +21,4 @@ EXPOSE 3000
 # Tell the image what to do when it starts as container
 CMD ["npm", "run", "dev"] 
 
-# docker build -t akr/my-app .
+# docker build -t my-app/server .

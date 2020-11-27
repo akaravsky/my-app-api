@@ -9,7 +9,7 @@
         }
     },
     "scripts": {
-        "dev": "webpack-dev-server",
+        "dev": "webpack-dev-server --host 0.0.0.0 --inline --content-base .",
         "clean": "rimraf build",
         "build": "npm run clean && webpack",
         "lint-fix": "eslint --fix \"src/**/*.{ts,tsx}\" && eslint --fix",
