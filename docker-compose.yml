@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    networks:
+      - some-net
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    networks:
+      - some-net
+
+  api:
+    build: 
+      dockerfile: Dockerfile.dev
+      context: .
+    volumes:
+      #don't rewrite node_modules
+      - /usr/src/app/node_modules
+      #copy all from current folder to app folder
+      - .:/usr/src/app
+    ports:
+      - "3000:3000"
+    networks:
+      - some-net
+
+networks:
+  some-net:
+    driver: bridge
+
+
+# docker-compose up
+# docker-compose up --build
+# docker-compose up --build --force-recreate --renew-anon-volumes
